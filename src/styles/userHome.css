@@ -1,0 +1,36 @@
+#user-home h1 {
+  text-align: center;
+  font-size: 2em;
+}
+
+.update-list {
+  margin: 2em 0;
+}
+
+.update-list h3 {
+  margin: 3% 5em;
+  font-family: "Roboto", sans-serif;
+  font-size: 1.5em;
+}
+
+.update-list li {
+  padding: 0;
+  list-style: none;
+}
+
+.update-list li {
+  margin: 1em;
+  margin-left: 8em;
+}
+
+.update-list li:before {
+  content: '\f10c';
+  font-family: 'FontAwesome';
+  float: left;
+  margin-left: -1.5em;
+  color: #0074D9;
+}
+
+.link {
+  font-size: 0.45em;
+}

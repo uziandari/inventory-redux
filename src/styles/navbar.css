@@ -1,0 +1,17 @@
+.navbar {
+  background: #5558af;
+}
+
+.navbar-brand strong {
+  font-family: "Open Sans", sans-serif;
+  color: #fff;
+}
+
+.nav-item span {
+  color: #fff;
+  font-family: "Open Sans", sans-serif
+}
+
+.nav-item span:hover {
+  opacity: 0.8;
+}

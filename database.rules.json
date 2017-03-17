@@ -1,0 +1,28 @@
+{
+  "rules": {
+    "inventory": {
+      ".indexOn": ["sku", "location", "upc", "parent_sku"],
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "freeLocations": {
+      ".indexOn" : ["location", "bin_size"],
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "returns": {
+      ".indexOn" : ["orderNumber"],
+      ".read": "auth != null",
+      ".write": "auth != null"
+    },
+    "adjustments" : {
+      ".indexOn" : ["sku", "parent_sku"],
+     	".read": "root.child('users/' + auth.uid).exists() && root.child('users').child(auth.uid).child('roles').child('administrator').val() === true"
+    },
+    "users" : {
+      "$uid" : {
+       ".read" : "($uid === auth.uid)"
+			}
+    } 
+  }
+}
