@@ -2,8 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
+import { CSVDownload, CSVLink } from 'react-csv';
 import SearchBar from '../components/SearchBar';
 import InventoryList from '../components/InventoryList';
+
 
 
 class Inventory extends React.Component {

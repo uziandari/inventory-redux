@@ -10,6 +10,7 @@ export default function authenticateUser(state = initialState, action) {
       return {
         ...state,
         authenticated: true,
+        admin: action.payload,
         error: null
       };
     case SIGN_OUT_USER:
