@@ -376,30 +376,38 @@ export function searchAdjustments(term) {
     dispatch(searchAdjustmentsRequested());
     return firebase.database().ref("inventory").orderByChild('sku').equalTo(term.toUpperCase().trim()).once('value', snap => {
       var parent;
+      var field;
       var itemsArr = [];
-        snap.forEach(function(snap) {
-          if (snap.val().parent_sku === "") {
-            parent = snap.val().sku;
-          } else {
-            parent = snap.val().parent_sku;
-          }
-          console.log(`Parent SKU: ${parent}`)
-          firebase.database().ref("adjustments").orderByChild('parent_sku').equalTo(parent.toUpperCase().trim()).once('value', snap => {
-            snap.forEach(function(snap) {
-              let item = {
-                key: snap.key,
-                sku: snap.val().sku,
-                date: snap.val().adjustment_date,
-                change: snap.val().adjustment_amount,
-                term
-              }  
-              itemsArr.push(item);
+      if (!snap.val()) {
+        console.log(`nothing macthes to ${term}`)
+        const adjustments = itemsArr;
+        dispatch(searchAdjustmentsFulfilled(adjustments));
+      } else {
+          snap.forEach(function(snap) {
+            if (snap.val().parent_sku === "") {
+              parent = snap.val().sku;
+              field = "sku";
+            } 
+            else {
+              parent = snap.val().parent_sku;
+              field = "parent_sku";
+            }
+            firebase.database().ref("adjustments").orderByChild(field).equalTo(parent.toUpperCase().trim()).once('value', snap => {
+              snap.forEach(function(snap) {
+                let item = {
+                  key: snap.key,
+                  sku: snap.val().sku,
+                  date: snap.val().adjustment_date,
+                  change: snap.val().adjustment_amount,
+                  term
+                }  
+                itemsArr.push(item);
+              });
+              const adjustments = itemsArr;
+              dispatch(searchAdjustmentsFulfilled(adjustments));
             });
-            const adjustments = itemsArr;
-            dispatch(searchAdjustmentsFulfilled(adjustments));
           });
-        });
-        
+      }
     })
     .catch((error) => {
       console.log(error);

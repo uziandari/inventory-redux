@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 export default class AdjustmentsList extends Component {
   render() {
-    console.log(this.props.adjustments)
+    console.log(this.props.adjustments.length)
     var itemsNode = this.props.adjustments.map((item, index) => {
       return (
         <tr key={index}>
