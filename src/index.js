@@ -11,6 +11,7 @@ import Returns from './containers/Returns';
 import ReturnView from './containers/ReturnView';
 import RequireAuth from './containers/RequireAuth';
 import Adjustments from './containers/Adjustments';
+import SingleItemView from './containers/SingleItemView';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
@@ -36,6 +37,7 @@ ReactDOM.render(
         <Route path="returns/add" component={RequireAuth(Returns)} />
         <Route path="returns/view" component={RequireAuth(ReturnView)} />
         <Route path="adjustments" component={RequireAuth(Adjustments)} />
+        <Route path="view/:id" component={RequireAuth(SingleItemView)} />
       </Route>
     </Router>
   </Provider>,

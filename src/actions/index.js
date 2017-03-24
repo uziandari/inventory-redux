@@ -18,6 +18,11 @@ export const SEARCH_INVENTORY_REQUESTED = "SEARCH_INVENTORY_REQUESTED";
 export const SEARCH_INVENTORY_REJECTED = "SEARCH_INVENTORY_REJECTED";
 export const SEARCH_INVENTORY_FULFILLED = "SEARCH_INVENTORY_FULFILLED";
 
+//single item
+export const SEARCH_ITEM_REQUESTED = "SEARCH_ITEM_REQUESTED";
+export const SEARCH_ITEM_REJECTED = "SEARCH_ITEM_REJECTED";
+export const SEARCH_ITEM_FULFILLED = "SEARCH_ITEM_FULFILLED";
+
 //free location search
 export const CHANGE_LOCATION_FIELD = "CHANGE_LOCATION_FIELD";
 export const SEARCH_LOCATIONS = 'SEARCH_LOCATIONS';
@@ -432,5 +437,38 @@ function searchAdjustmentsFulfilled(adjustments) {
   return {
     type: SEARCH_ADJUSTMENTS_FULFILLED,
     payload: adjustments
+  };
+}
+
+export function loadItem(id) {
+  return dispatch => {
+    dispatch(searchItemRequested());
+    return firebase.database().ref("inventory").orderByChild("sku").equalTo(id).once('value', snap => {
+      var item = snap.val();
+      dispatch(searchItemFulfilled(item))
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch(searchItemRejected());
+    });
+  }
+}
+
+function searchItemRequested() {
+  return {
+    type: SEARCH_ITEM_REQUESTED
+  };
+}
+
+function searchItemRejected() {
+  return {
+    type: SEARCH_ITEM_REJECTED
+  }
+}
+
+function searchItemFulfilled(item) {
+  return {
+    type: SEARCH_ITEM_FULFILLED,
+    payload: item
   };
 }

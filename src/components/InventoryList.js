@@ -1,12 +1,13 @@
 import React from 'react';
 import InventoryItem from './InventoryItem';
 
+
 //import css
 import '../styles/inventory.css';
 
 const InventoryList = (props) => {
   const inventoryItems = props.inventory.map((item, index) => {
-    return <InventoryItem key={index} item={item} />
+    return <InventoryItem key={index} item={item}  />
   });
 
   return (

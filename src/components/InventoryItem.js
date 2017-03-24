@@ -1,4 +1,5 @@
 import React from 'react';
+import { browserHistory } from 'react-router';
 
 const InventoryItem = (item) => {
   const productImage = 'http://rockbottomimages.com/ProductImages/random/NoImage2.jpg';
@@ -16,6 +17,9 @@ const InventoryItem = (item) => {
           <div className="content">
             <p>{item.item.upc}</p>
             <p>{item.item.description}</p>
+          </div>
+          <div>
+            <button onClick={() => browserHistory.push(`view/${item.item.sku}`)}>View More</button>
           </div>
         </div>
       </div>
