@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-export default class InventoryDetails extends Component {
+export default class ItemDetail extends Component {
   
   render() {
     return (

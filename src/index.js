@@ -1,11 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { syncHistoryWithStore } from 'react-router-redux'
 import App from './components/App';
 import Home from './containers/Home';
 import Login from './containers/Login';
 import UserHome from './components/UserHome';
 import Inventory from './containers/Inventory';
-import InventoryDetails from './components/InventoryDetails';
+import ItemDetail from './containers/ItemDetail';
 import Locations from './containers/Locations';
 import Returns from './containers/Returns';
 import ReturnView from './containers/ReturnView';
@@ -21,18 +22,18 @@ import './styles/app.css';
 import './styles/layout.css';
 
 const store = configureStore();
-
+const history = syncHistoryWithStore(browserHistory, store);
 
 ReactDOM.render(
   <Provider store={store}>
-    <Router history={browserHistory}>
+    <Router history={history}>
       <Route path="/" component={App}>
         <IndexRoute component={Home} />
         <Route path="login" component={Login} />
         <Route path="userhome" component={RequireAuth(UserHome)} />
         <Route path="inventory" component={RequireAuth(Inventory)} />
         <Route path="inventory/locations" component={RequireAuth(Locations)} />
-        <Route path="inventory/:id" component={RequireAuth(InventoryDetails)} />
+        <Route path="inventory/:id" component={RequireAuth(ItemDetail)} />
         <Route path="returns/add" component={RequireAuth(Returns)} />
         <Route path="returns/view" component={RequireAuth(ReturnView)} />
         <Route path="adjustments" component={RequireAuth(Adjustments)} />

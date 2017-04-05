@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
 import { reducer as FormReducer } from 'redux-form';
+import { routerReducer } from 'react-router-redux'
 import AuthReducer from './auth';
 import FieldReducer from './searchField';
 import LocationFieldReducer from './locationField';
@@ -13,6 +14,7 @@ import AdjustmentsReducer from './adjustments';
 
 const rootReducer = combineReducers({
   auth: AuthReducer,
+  routing: routerReducer,
   form: FormReducer,
   inventory: InventoryReducer,
   searchField: FieldReducer,

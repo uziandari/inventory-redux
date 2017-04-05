@@ -394,10 +394,11 @@ export function searchAdjustments(term) {
             }
             firebase.database().ref("adjustments").orderByChild(field).equalTo(parent.toUpperCase().trim()).once('value', snap => {
               snap.forEach(function(snap) {
+                let adjTime = moment(snap.val().adjustment_date).format('DD-MM-YYYY')
                 let item = {
                   key: snap.key,
                   sku: snap.val().sku,
-                  date: snap.val().adjustment_date,
+                  date: adjTime,
                   change: snap.val().adjustment_amount,
                   term
                 }  
