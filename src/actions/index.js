@@ -40,6 +40,12 @@ export const RETURN_REJECTED = "RETURN_REJECTED";
 export const OPEN_MODAL = "OPEN_MODAL";
 export const CLOSE_MODAL = "CLOSE_MODAL";
 
+//item viewReturns
+export const ITEM_INVENTORY = 'ITEM_INVENTORY';
+export const ITEM_INVENTORY_REQUESTED = "ITEM_INVENTORY_REQUESTED";
+export const ITEM_INVENTORY_REJECTED = "ITEMH_INVENTORY_REJECTED";
+export const ITEM_INVENTORY_FULFILLED = "ITEM_INVENTORY_FULFILLED";
+
 
 const firebaseConfig = {
     apiKey: config.apiKey,
@@ -101,7 +107,6 @@ export function authError(error) {
 
 //Search Inventory
 export function changeSearchField(searchField) {
-  console.log(`searchfield is: ${searchField}`)
   return {
     type: CHANGE_FIELD,
     payload: searchField
@@ -109,7 +114,6 @@ export function changeSearchField(searchField) {
 }
 
 export function changeLocationField(searchField) {
-  console.log(`searchfield for locations is: ${searchField}`)
   return {
     type: CHANGE_LOCATION_FIELD,
     payload: searchField
@@ -433,5 +437,58 @@ function searchAdjustmentsFulfilled(adjustments) {
   return {
     type: SEARCH_ADJUSTMENTS_FULFILLED,
     payload: adjustments
+  };
+}
+
+//view single item
+
+export function itemInventory(skuId) {
+   
+  return dispatch => {
+    dispatch(searchInventoryRequested());
+    return firebase.database().ref("inventory").orderByChild("sku").equalTo(skuId).once('value', snap => {
+      var itemsArr = [];
+        snap.forEach(function(snap) {
+            let item = {
+              key: snap.key,
+              sku: snap.val().sku,
+              description: snap.val().description,
+              upc: snap.val().upc,
+              location: snap.val().location,
+              imgUrl: snap.val().img_url,
+              backstock: snap.val().backstock,
+              inline: snap.val().inline,
+              parentSku: snap.val().parent_sku,
+              stock: snap.val().stock,
+              committed: snap.val().committed
+            }  
+          itemsArr.push(item);
+        });
+      const inventory = itemsArr;
+      dispatch(itemInventoryFulfilled(inventory))
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch(itemInventoryRejected());
+    });
+  }
+}
+
+function itemInventoryRequested() {
+  return {
+    type: ITEM_INVENTORY_REQUESTED
+  };
+}
+
+function itemInventoryRejected() {
+  return {
+    type: ITEM_INVENTORY_REJECTED
+  }
+}
+
+function itemInventoryFulfilled(inventory) {
+  return {
+    type: ITEM_INVENTORY_FULFILLED,
+    payload: inventory
   };
 }
