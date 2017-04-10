@@ -18,7 +18,7 @@ class ItemDetail extends Component {
     return (
       <div id="item-detail-section">
         <div className="go-back">
-          <Link to='/inventory'>Go Back</Link>
+          <Link to='/inventory' className="detail-link second after">Go Back</Link>
         </div>
         <ItemView item={this.props.inventory} />
       </div>
@@ -27,7 +27,6 @@ class ItemDetail extends Component {
 }
 
 function mapStateToProps(state) {
-  console.log(state.item.data)
   if (state.item.data.length === 0) {
     return {};
   } else {

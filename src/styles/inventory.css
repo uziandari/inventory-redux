@@ -86,3 +86,56 @@
   font-size: 1.5em;
   font-family: "Roboto", sans-serif;
 }
+
+.detail-link, .detail-link:visited, .detail-link:hover, .detail-link:active{
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+	position: relative;
+  transition: 0.5s color ease;
+	text-decoration: none;
+	color: #5585af;
+	font-size: 1.5em;
+}
+
+.detail-link:hover{
+	color: #d73444;
+}
+
+.detail-link.before:before, .detail-link.after:after{
+  content: "";
+  transition: 0.5s all ease;
+  -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+  position: absolute;
+}
+
+.detail-link.before:before{
+  top: -0.25em;
+}
+
+.detail-link.after:after{
+  bottom: -0.25em;
+}
+
+.detail-link.before:before, .detail-link.after:after{
+  height: 0.35rem;
+  width: 0;
+  background: #d73444;
+}
+
+.detail-link.first:after{
+  left: 0;
+}
+
+.detail-link.second:after{
+  right:0;
+}
+
+.detail-link.before:hover:before, .detail-link.after:hover:after{
+  width:100%;
+}
+
+.go-back {
+  margin: 0.5em 0 0 3em;
+  z-index: 1;
+}

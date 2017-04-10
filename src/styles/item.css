@@ -1,0 +1,69 @@
+.detail-card {
+  width: 1000px;
+  height: 550px;
+  overflow: hidden;
+  display: block;
+  margin: 30px auto;
+  box-shadow: 0 0 30px 0 #999;
+  border-radius: 15px;
+  position: relative;
+}
+
+.okay-background {
+  background: -webkit-linear-gradient(to left, #fff 45%, #58AF55 100%);
+  background: linear-gradient(to left, #fff 45%, #58AF55 100%);
+}
+
+.recount-background {
+  background: -webkit-linear-gradient(to left, #fff 45%, #afac55 100%);
+  background: linear-gradient(to left, #fff 45%, #afac55 100%);
+}
+
+.abf-background {
+  background: -webkit-linear-gradient(to left, #fff 45%, #af5558 100%);
+  background: linear-gradient(to left, #fff 45%, #af5558 100%);
+}
+
+.inline-background {
+  background: -webkit-linear-gradient(to left, #fff 45%, #5585af 100%);
+  background: linear-gradient(to left, #fff 45%, #5585af 100%);
+}
+
+.detail-image {
+  width: 50%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  height: 100%;
+  position: relative;
+}
+.detail-image img {
+  margin-left: 5%; 
+  border-radius: 4px;
+  max-width: 90%;
+  max-height: 90%
+}
+
+.detail-card-info {
+  position: absolute;
+  width: 50%;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateY(-50%);
+          transform: translateY(-50%);
+}
+
+.detail-card-info h3 {
+  font: 1.6em "Roboto", sans-serif;
+}
+
+.detail-card-info p {
+  font-family: "Open Sans", sans-serif;
+  padding-left: 1em; 
+}
+
+.detail-card-info ul {
+  margin: -0.2em 0;
+  line-height: 1.2em;
+  list-style: none;
+}

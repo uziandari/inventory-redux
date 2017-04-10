@@ -9,9 +9,9 @@ export default class UserHome extends Component {
       <div id="user-home">
         <h1>What's New</h1>
         <div className="update-list">
-           <h3>-4/6/2017-</h3>
+           <h3>-4/7/2017-</h3>
           <ul>
-            <li>Adjustments now reflects proper date.</li>
+            <li>Adjustments now reflect proper date.</li>
             <li>Free location search should be more accurate.</li>
           </ul>
           <h3>-3/17/2017-</h3>

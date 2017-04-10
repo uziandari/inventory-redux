@@ -3,7 +3,7 @@ import React, { Component } from 'react';
 
 export default class AdjustmentsList extends Component {
   render() {
-    console.log(this.props.adjustments.length)
+    console.log(this.props.adjustments)
     var itemsNode = this.props.adjustments.map((item, index) => {
       return (
         <tr key={index}>
@@ -15,7 +15,8 @@ export default class AdjustmentsList extends Component {
     }); 
 
     return (
-      <table className="table table-hover">
+      <table className="table table-hover table-condensed adj-table">
+        {(this.props.adjustments.length > 0) ? <caption>Total Adjustments: {this.props.adjustments.adjTotal}</caption> : null}
         <thead>
           <tr>
             <th>SKU</th>

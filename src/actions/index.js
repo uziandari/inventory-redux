@@ -397,6 +397,7 @@ export function searchAdjustments(term) {
               field = "parent_sku";
             }
             firebase.database().ref("adjustments").orderByChild(field).equalTo(parent.toUpperCase().trim()).once('value', snap => {
+              let adjTotal = 0;
               snap.forEach(function(snap) {
                 let adjTime = moment(snap.val().adjustment_date).format('DD-MM-YYYY')
                 let item = {
@@ -405,10 +406,12 @@ export function searchAdjustments(term) {
                   date: adjTime,
                   change: snap.val().adjustment_amount,
                   term
-                }  
+                }
+                adjTotal += snap.val().adjustment_amount  
                 itemsArr.push(item);
               });
               const adjustments = itemsArr;
+              adjustments.adjTotal = adjTotal
               dispatch(searchAdjustmentsFulfilled(adjustments));
             });
           });
@@ -445,7 +448,7 @@ function searchAdjustmentsFulfilled(adjustments) {
 export function itemInventory(skuId) {
    
   return dispatch => {
-    dispatch(searchInventoryRequested());
+    dispatch(itemInventoryRequested());
     return firebase.database().ref("inventory").orderByChild("sku").equalTo(skuId).once('value', snap => {
       var itemsArr = [];
         snap.forEach(function(snap) {
@@ -453,6 +456,10 @@ export function itemInventory(skuId) {
               key: snap.key,
               sku: snap.val().sku,
               description: snap.val().description,
+              caTotal: snap.val().total,
+              caAvailable: snap.val().available,
+              caPending: snap.val().pending_checkout + snap.val().pending_payment,
+              caFlag: snap.val().flag,
               upc: snap.val().upc,
               location: snap.val().location,
               imgUrl: snap.val().img_url,
@@ -460,7 +467,8 @@ export function itemInventory(skuId) {
               inline: snap.val().inline,
               parentSku: snap.val().parent_sku,
               stock: snap.val().stock,
-              committed: snap.val().committed
+              committed: snap.val().committed,
+              blocked: snap.val().is_blocked
             }  
           itemsArr.push(item);
         });

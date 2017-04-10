@@ -23,3 +23,11 @@
 .term-match {
   background: #52ADAA;
 }
+
+.adj-table {
+  margin-top: 2em;
+}
+
+.adj-table thead {
+  margin-bottom: 1em;
+}
