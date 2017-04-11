@@ -23,6 +23,9 @@
       "$uid" : {
        ".read" : "($uid === auth.uid)"
 			}
-    } 
+    },
+    "previousLocations" : {
+      ".indexOn" : "sku"
+    }
   }
 }

@@ -452,27 +452,31 @@ export function itemInventory(skuId) {
     return firebase.database().ref("inventory").orderByChild("sku").equalTo(skuId).once('value', snap => {
       var itemsArr = [];
         snap.forEach(function(snap) {
-            let item = {
-              key: snap.key,
-              sku: snap.val().sku,
-              description: snap.val().description,
-              caTotal: snap.val().total,
-              caAvailable: snap.val().available,
-              caPending: snap.val().pending_checkout + snap.val().pending_payment,
-              caFlag: snap.val().flag,
-              upc: snap.val().upc,
-              location: snap.val().location,
-              imgUrl: snap.val().img_url,
-              backstock: snap.val().backstock,
-              inline: snap.val().inline,
-              parentSku: snap.val().parent_sku,
-              stock: snap.val().stock,
-              committed: snap.val().committed,
-              blocked: snap.val().is_blocked
-            }  
+          let item = {
+            key: snap.key,
+            sku: snap.val().sku,
+            description: snap.val().description,
+            caTotal: snap.val().total,
+            caAvailable: snap.val().available,
+            caPending: snap.val().pending_checkout + snap.val().pending_payment,
+            caFlag: snap.val().flag,
+            upc: snap.val().upc,
+            location: snap.val().location,
+            imgUrl: snap.val().img_url,
+            backstock: snap.val().backstock,
+            inline: snap.val().inline,
+            parentSku: snap.val().parent_sku,
+            stock: snap.val().stock,
+            committed: snap.val().committed,
+            blocked: snap.val().is_blocked,
+            // prevLocation: firebase.database().ref("previousLocations").orderByChild("sku").equalTo(skuId).once('value', snap => {
+            //   return snap.val();
+            // })
+          }
           itemsArr.push(item);
         });
       const inventory = itemsArr;
+      console.log(inventory)
       dispatch(itemInventoryFulfilled(inventory))
     })
     .catch((error) => {
