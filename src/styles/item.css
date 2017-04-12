@@ -10,23 +10,23 @@
 }
 
 .okay-background {
-  background: -webkit-linear-gradient(to left, #fff 45%, #58AF55 100%);
-  background: linear-gradient(to left, #fff 45%, #58AF55 100%);
+  background: -webkit-linear-gradient(to right, #fff 45%, #58AF55 100%);
+  background: linear-gradient(to right, #fff 45%, #58AF55 100%);
 }
 
 .recount-background {
-  background: -webkit-linear-gradient(to left, #fff 45%, #afac55 100%);
-  background: linear-gradient(to left, #fff 45%, #afac55 100%);
+  background: -webkit-linear-gradient(to right, #fff 45%, #afac55 100%);
+  background: linear-gradient(to right, #fff 45%, #afac55 100%);
 }
 
 .abf-background {
-  background: -webkit-linear-gradient(to left, #fff 45%, #af5558 100%);
-  background: linear-gradient(to left, #fff 45%, #af5558 100%);
+  background: -webkit-linear-gradient(to right, #fff 45%, #af5558 100%);
+  background: linear-gradient(to right, #fff 45%, #af5558 100%);
 }
 
 .inline-background {
-  background: -webkit-linear-gradient(to left, #fff 45%, #5585af 100%);
-  background: linear-gradient(to left, #fff 45%, #5585af 100%);
+  background: -webkit-linear-gradient(to right, #fff 45%, #5585af 100%);
+  background: linear-gradient(to right, #fff 45%, #5585af 100%);
 }
 
 .detail-image {

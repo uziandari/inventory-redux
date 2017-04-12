@@ -469,14 +469,10 @@ export function itemInventory(skuId) {
             stock: snap.val().stock,
             committed: snap.val().committed,
             blocked: snap.val().is_blocked,
-            // prevLocation: firebase.database().ref("previousLocations").orderByChild("sku").equalTo(skuId).once('value', snap => {
-            //   return snap.val();
-            // })
           }
           itemsArr.push(item);
-        });
+       });
       const inventory = itemsArr;
-      console.log(inventory)
       dispatch(itemInventoryFulfilled(inventory))
     })
     .catch((error) => {

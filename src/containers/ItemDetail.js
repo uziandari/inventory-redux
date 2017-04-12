@@ -10,7 +10,7 @@ import Inventory from './Inventory';
 
 class ItemDetail extends Component {
 
-  componentWillMount() {
+  componentDidMount() {
     this.props.actions.itemInventory(this.props.params.id)
   }
 

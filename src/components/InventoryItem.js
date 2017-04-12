@@ -19,7 +19,7 @@ const InventoryItem = (item) => {
             <p>{item.item.description}</p>
           </div>
           <div>
-            <Link to={`/inventory/${item.item.sku}`} className="detail-link first after">View More</Link> {/* Link to MovieDetail component */}
+            <Link to={`/inventory/${item.item.sku}`} className="detail-link first after">View More</Link> {/* Link to ItemDetail component */}
           </div>
         </div>
       </div>
