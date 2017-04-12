@@ -46,6 +46,10 @@ export const ITEM_INVENTORY_REQUESTED = "ITEM_INVENTORY_REQUESTED";
 export const ITEM_INVENTORY_REJECTED = "ITEMH_INVENTORY_REJECTED";
 export const ITEM_INVENTORY_FULFILLED = "ITEM_INVENTORY_FULFILLED";
 
+//item history
+export const LOCATION_HISTORY_REQUESTED = 'LOCATION_HISTORY_REQUESTED';
+export const LOCATION_HISTORY_FULFILLED = 'LOCATION_HISTORY_FULFILLED';
+export const LOCATION_HISTORY_REJECTED = 'LOCATION_HISTORY_REJECTED';
 
 const firebaseConfig = {
     apiKey: config.apiKey,
@@ -498,5 +502,44 @@ function itemInventoryFulfilled(inventory) {
   return {
     type: ITEM_INVENTORY_FULFILLED,
     payload: inventory
+  };
+}
+
+//find previous locations
+export function findLocationHistory(skuId) {
+  console.log(skuId)
+  return dispatch => {
+    dispatch(locationHistoryRequested());
+    return firebase.database().ref("previousLocations").orderByChild("sku").equalTo(skuId).once('value', snap => {
+      var historyArr = [];
+        snap.forEach(function(snap) {
+          console.log(snap.val());
+       });
+      const history = historyArr;
+      dispatch(locationHistoryFulfilled(historyArr))
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch(locationHistoryRejected());
+    });
+  }
+}
+
+function locationHistoryRequested() {
+  return {
+    type: LOCATION_HISTORY_REQUESTED
+  };
+}
+
+function locationHistoryRejected() {
+  return {
+    type: LOCATION_HISTORY_REJECTED
+  }
+}
+
+function locationHistoryFulfilled(historyArr) {
+  return {
+    type: LOCATION_HISTORY_FULFILLED,
+    payload: historyArr
   };
 }

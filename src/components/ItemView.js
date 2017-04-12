@@ -5,14 +5,10 @@ import React, { Component } from 'react';
 import '../styles/item.css';
 
 export default class ItemView extends Component {
-  constructor(props) {
-    super(props);
-    this.setState = {
-      productImage: 'http://rockbottomimages.com/ProductImages/random/NoImage2.jpg'
-    }
-  }
-
   render() { 
+
+    const { toggleLocations, toggleParentLocations } = this.props;
+
     if (!this.props.item) { 
       return (
         <div className="loading">
@@ -24,7 +20,7 @@ export default class ItemView extends Component {
         <div className="col-xs-12">
           <div className={`detail-card ${ this.props.item.caFlag.includes("absolute") ? 'abf-background' : this.props.item.caFlag.includes("recount") ? 'recount-background' : this.props.item.caFlag.toUpperCase() === "INLINE" ? 'inline-background' : 'okay-background'}`}>
             <div className="detail-image">
-              <img src={(this.props.item.imgUrl === "") ? this.state.productImage : this.props.item.imgUrl} alt={this.props.item.description} />
+              <img src={(this.props.item.imgUrl === "") ? this.props.productImage : this.props.item.imgUrl} alt={this.props.item.description} />
             </div>
             <div className="detail-card-info">
               <h3>{this.props.item.sku}  {(this.props.item.blocked === "True") ? <span>!</span> : null}</h3>
@@ -46,6 +42,11 @@ export default class ItemView extends Component {
               <h3>Location: <strong>{this.props.item.location}</strong> | {this.props.item.backstock}</h3>
               <p>Inline: <strong>{this.props.item.inline}</strong></p>
               <p>Notes/Flags: <strong>{this.props.item.caFlag}</strong></p>
+              <div className="btn-group">
+                <button type="button" onClick={() => toggleLocations(this.props.item.sku)} className="btn btn-primary">View Previous Locations</button>
+                { (this.props.item.parentSku) ? <button type="button" onClick={() => toggleLocations(this.props.item.parentSku)} className="btn btn-primary">View Parent Locations</button> : null }
+                
+              </div>
             </div>
           </div>
         </div>
