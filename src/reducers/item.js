@@ -3,7 +3,7 @@ import { ITEM_INVENTORY_FULFILLED, LOCATION_HISTORY_FULFILLED } from '../actions
 const initialState = {
   data: [],
   productImage: null,
-  toggleLocationsView: false,
+  toggleLocations: false,
   toggleParentView: false
 };
 
@@ -18,7 +18,9 @@ export default function ItemInventory(state = initialState, action) {
     case LOCATION_HISTORY_FULFILLED:
       return {
         ...state,
-        locationHistory: action.payload
+        locationHistory: action.payload,
+        toggleLocations: !state.toggleLocations,
+        toggleParentView: false
       }
     default:
       return state;

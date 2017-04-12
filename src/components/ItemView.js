@@ -7,7 +7,21 @@ import '../styles/item.css';
 export default class ItemView extends Component {
   render() { 
 
-    const { toggleLocations, toggleParentLocations } = this.props;
+    const { toggleLocations, toggleParentLocations, locHistory } = this.props;
+
+    if (locHistory) {
+      var historyNode = this.props.locHistory.map((history, index) => {
+        return (
+          <div key={index}>
+            {history.submitDate}
+            {history.field}
+            {history.locationMoved}
+          </div>
+        );
+      });
+    }
+   
+    
 
     if (!this.props.item) { 
       return (
@@ -43,9 +57,12 @@ export default class ItemView extends Component {
               <p>Inline: <strong>{this.props.item.inline}</strong></p>
               <p>Notes/Flags: <strong>{this.props.item.caFlag}</strong></p>
               <div className="btn-group">
-                <button type="button" onClick={() => toggleLocations(this.props.item.sku)} className="btn btn-primary">View Previous Locations</button>
+                <button type="button" onClick={() => toggleLocations(this.props.item.sku) } className="btn btn-primary">View Previous Locations</button>
                 { (this.props.item.parentSku) ? <button type="button" onClick={() => toggleLocations(this.props.item.parentSku)} className="btn btn-primary">View Parent Locations</button> : null }
                 
+              </div>
+              <div className="history-field">
+                { (toggleLocations) ? historyNode : null }
               </div>
             </div>
           </div>

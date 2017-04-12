@@ -10,7 +10,7 @@ export default class AdjustmentsList extends Component {
           <td className={item.sku === item.term ? "term-match" : null }>{item.sku}</td>
           <td className={item.sku === item.term ? "term-match" : null }>{item.date}</td>
           <td className={item.sku === item.term ? "term-match" : null }>{item.change}</td>
-      </tr>
+        </tr>
       );
     }); 
 

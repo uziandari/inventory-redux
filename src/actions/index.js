@@ -513,7 +513,13 @@ export function findLocationHistory(skuId) {
     return firebase.database().ref("previousLocations").orderByChild("sku").equalTo(skuId).once('value', snap => {
       var historyArr = [];
         snap.forEach(function(snap) {
-          console.log(snap.val());
+          let history = {
+            key: snap.key,
+            submitDate: snap.val().date,
+            field: snap.val().field,
+            locationMoved: snap.val().location
+          }
+          historyArr.push(history);
        });
       const history = historyArr;
       dispatch(locationHistoryFulfilled(historyArr))

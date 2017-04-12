@@ -25,7 +25,9 @@
 			}
     },
     "previousLocations" : {
-      ".indexOn" : "sku"
+      ".indexOn" : "sku",
+      ".read": "auth != null",
+      ".write": "auth != null"
     }
   }
 }
