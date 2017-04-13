@@ -3,8 +3,7 @@ import { ITEM_INVENTORY_FULFILLED, LOCATION_HISTORY_FULFILLED } from '../actions
 const initialState = {
   data: [],
   productImage: null,
-  toggleLocations: false,
-  toggleParentView: false
+  locationsVisible: false
 };
 
 export default function ItemInventory(state = initialState, action) {
@@ -13,14 +12,15 @@ export default function ItemInventory(state = initialState, action) {
       return {
         ...state,
         data: action.payload,
-        productImage: 'http://rockbottomimages.com/ProductImages/random/NoImage2.jpg'
+        productImage: 'http://rockbottomimages.com/ProductImages/random/NoImage2.jpg',
+        locationsVisible: false
       }
     case LOCATION_HISTORY_FULFILLED:
+      console.log(state.locationsVisible)
       return {
         ...state,
         locationHistory: action.payload,
-        toggleLocations: !state.toggleLocations,
-        toggleParentView: false
+        locationsVisible: !state.locationsVisible
       }
     default:
       return state;

@@ -5,23 +5,21 @@ import React, { Component } from 'react';
 import '../styles/item.css';
 
 export default class ItemView extends Component {
-  render() { 
+  render() {
+    const { toggleLocations, locationsVisible, toggleParentLocations, locHistory } = this.props;
 
-    const { toggleLocations, toggleParentLocations, locHistory } = this.props;
-
-    if (locHistory) {
+    if (locHistory && locationsVisible) {
       var historyNode = this.props.locHistory.map((history, index) => {
         return (
-          <div key={index}>
-            {history.submitDate}
-            {history.field}
-            {history.locationMoved}
-          </div>
+          <tr key={index}>
+            <td>{history.submitDate}</td>
+            <td>{history.field}</td>
+            <td>{history.locationMoved}</td>
+          </tr>
         );
       });
     }
-   
-    
+  
 
     if (!this.props.item) { 
       return (
@@ -31,6 +29,7 @@ export default class ItemView extends Component {
       );
     } else {
       return (
+        <div className="row">
         <div className="col-xs-12">
           <div className={`detail-card ${ this.props.item.caFlag.includes("absolute") ? 'abf-background' : this.props.item.caFlag.includes("recount") ? 'recount-background' : this.props.item.caFlag.toUpperCase() === "INLINE" ? 'inline-background' : 'okay-background'}`}>
             <div className="detail-image">
@@ -57,15 +56,19 @@ export default class ItemView extends Component {
               <p>Inline: <strong>{this.props.item.inline}</strong></p>
               <p>Notes/Flags: <strong>{this.props.item.caFlag}</strong></p>
               <div className="btn-group">
-                <button type="button" onClick={() => toggleLocations(this.props.item.sku) } className="btn btn-primary">View Previous Locations</button>
-                { (this.props.item.parentSku) ? <button type="button" onClick={() => toggleLocations(this.props.item.parentSku)} className="btn btn-primary">View Parent Locations</button> : null }
-                
-              </div>
-              <div className="history-field">
-                { (toggleLocations) ? historyNode : null }
+                <button type="button" onClick={() => toggleLocations(this.props.item.sku, "sku")} className="btn btn-primary">View Previous Locations</button>
+                { (this.props.item.parentSku) ? <button type="button" onClick={() => toggleLocations(this.props.item.parentSku, "parentSku")} className="btn btn-primary">View Parent Locations</button> : null }  
               </div>
             </div>
           </div>
+        </div>
+        <div className="col-xs-12">
+          <table className="table table-striped table-condensed">
+            <tbody>
+              {historyNode}
+            </tbody>
+          </table>
+        </div>
         </div>
       );
     }

@@ -506,11 +506,10 @@ function itemInventoryFulfilled(inventory) {
 }
 
 //find previous locations
-export function findLocationHistory(skuId) {
-  console.log(skuId)
+export function findLocationHistory(skuId, typeId) {
   return dispatch => {
     dispatch(locationHistoryRequested());
-    return firebase.database().ref("previousLocations").orderByChild("sku").equalTo(skuId).once('value', snap => {
+    return firebase.database().ref("previousLocations").orderByChild(typeId).equalTo(skuId).once('value', snap => {
       var historyArr = [];
         snap.forEach(function(snap) {
           let history = {
@@ -518,6 +517,9 @@ export function findLocationHistory(skuId) {
             submitDate: snap.val().date,
             field: snap.val().field,
             locationMoved: snap.val().location
+          }
+          if (typeId === "parentSku") {
+            history.sku = snap.val().sku
           }
           historyArr.push(history);
        });

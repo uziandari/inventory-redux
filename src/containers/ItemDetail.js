@@ -11,11 +11,11 @@ import Inventory from './Inventory';
 class ItemDetail extends Component {
 
   componentDidMount() {
-    this.props.actions.itemInventory(this.props.params.id)
+    this.props.actions.itemInventory(this.props.params.id);
   }
 
-  toggleLocationsView(sku) {
-    this.props.actions.findLocationHistory(sku);
+  toggleLocationsView(sku, skuField) {
+    this.props.actions.findLocationHistory(sku, skuField);
   }
   
   toggleParentLocations(parent) {
@@ -28,7 +28,7 @@ class ItemDetail extends Component {
         <div className="go-back">
           <Link to='/inventory' className="detail-link second after">Go Back</Link>
         </div>
-        <ItemView item={this.props.inventory} locHistory={this.props.locHistory} toggleLocations={this.toggleLocationsView.bind(this)} />
+        <ItemView item={this.props.inventory} locHistory={this.props.locHistory} toggleLocations={this.toggleLocationsView.bind(this)} locationsVisible={this.props.locationsVisible} parentsVisible={this.props.parentsVisible}/>
       </div>
     );
   }
@@ -40,7 +40,9 @@ function mapStateToProps(state) {
   } else {
     return {
       inventory: state.item.data[0],
-      locHistory: state.item.locationHistory
+      locHistory: state.item.locationHistory,
+      locationsVisible: state.item.locationsVisible,
+      parentsVisible: state.item.parentsVisible
     };
   }
 }
