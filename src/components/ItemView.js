@@ -58,8 +58,8 @@ export default class ItemView extends Component {
                   <p>Inline: <strong>{this.props.item.inline}</strong></p>
                   <p>Notes/Flags: <strong>{this.props.item.caFlag}</strong></p>
                   <div className="btn-group">
-                    <button type="button" onClick={() => toggleLocations(this.props.item.sku, "sku")} className="btn btn-primary">View Previous Locations</button>
-                    { (this.props.item.parentSku) ? <button type="button" onClick={() => toggleLocations(this.props.item.parentSku, "parent_sku")} className="btn btn-primary">View Parent Locations</button> : null }  
+                    <button type="button" onClick={() => toggleLocations(this.props.item.sku, "sku")} className="btn btn-primary history-button">View Previous Locations</button>
+                    { (this.props.item.parentSku) ? <button type="button" onClick={() => toggleLocations(this.props.item.parentSku, "parent_sku")} className="btn btn-primary history-button">View Parent Locations</button> : null }  
                   </div>
                 </div>
               </div>
