@@ -6,7 +6,7 @@ import '../styles/item.css';
 
 export default class ItemView extends Component {
   render() {
-    const { toggleLocations, locationsVisible, toggleParentLocations, locHistory } = this.props;
+    const { toggleLocations, locationsVisible, locHistory } = this.props;
 
     if (locHistory && locationsVisible) {
       var historyNode = this.props.locHistory.map((history, index) => {
@@ -57,7 +57,7 @@ export default class ItemView extends Component {
               <p>Notes/Flags: <strong>{this.props.item.caFlag}</strong></p>
               <div className="btn-group">
                 <button type="button" onClick={() => toggleLocations(this.props.item.sku, "sku")} className="btn btn-primary">View Previous Locations</button>
-                { (this.props.item.parentSku) ? <button type="button" onClick={() => toggleLocations(this.props.item.parentSku, "parentSku")} className="btn btn-primary">View Parent Locations</button> : null }  
+                { (this.props.item.parentSku) ? <button type="button" onClick={() => toggleLocations(this.props.item.parentSku, "parent_sku")} className="btn btn-primary">View Parent Locations</button> : null }  
               </div>
             </div>
           </div>

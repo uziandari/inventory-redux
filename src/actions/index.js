@@ -507,22 +507,33 @@ function itemInventoryFulfilled(inventory) {
 
 //find previous locations
 export function findLocationHistory(skuId, typeId) {
+  console.log(typeId)
   return dispatch => {
     dispatch(locationHistoryRequested());
     return firebase.database().ref("previousLocations").orderByChild(typeId).equalTo(skuId).once('value', snap => {
       var historyArr = [];
+      if (typeId === "parent_sku") {
         snap.forEach(function(snap) {
+          console.log(snap.val())
           let history = {
             key: snap.key,
-            submitDate: snap.val().date,
-            field: snap.val().field,
-            locationMoved: snap.val().location
-          }
-          if (typeId === "parentSku") {
-            history.sku = snap.val().sku
+            submitDate: snap.val().changeDate,
+            field: snap.val().changeField,
+            locationMoved: snap.val().changeLoc
           }
           historyArr.push(history);
        });
+      } else {
+        snap.forEach(function(snap) {
+          let history = {
+            key: snap.key,
+            submitDate: snap.val().changeDate,
+            field: snap.val().changeField,
+            locationMoved: snap.val().changeLoc
+          }
+          historyArr.push(history);
+       });
+      }
       const history = historyArr;
       dispatch(locationHistoryFulfilled(historyArr))
     })

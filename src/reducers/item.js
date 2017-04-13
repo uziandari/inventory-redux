@@ -16,7 +16,6 @@ export default function ItemInventory(state = initialState, action) {
         locationsVisible: false
       }
     case LOCATION_HISTORY_FULFILLED:
-      console.log(state.locationsVisible)
       return {
         ...state,
         locationHistory: action.payload,

@@ -28,7 +28,7 @@ class ItemDetail extends Component {
         <div className="go-back">
           <Link to='/inventory' className="detail-link second after">Go Back</Link>
         </div>
-        <ItemView item={this.props.inventory} locHistory={this.props.locHistory} toggleLocations={this.toggleLocationsView.bind(this)} locationsVisible={this.props.locationsVisible} parentsVisible={this.props.parentsVisible}/>
+        <ItemView item={this.props.inventory} locHistory={this.props.locHistory} toggleLocations={this.toggleLocationsView.bind(this)} locationsVisible={this.props.locationsVisible} />
       </div>
     );
   }
@@ -41,8 +41,7 @@ function mapStateToProps(state) {
     return {
       inventory: state.item.data[0],
       locHistory: state.item.locationHistory,
-      locationsVisible: state.item.locationsVisible,
-      parentsVisible: state.item.parentsVisible
+      locationsVisible: state.item.locationsVisible
     };
   }
 }
