@@ -50,6 +50,7 @@ export const ITEM_INVENTORY_FULFILLED = "ITEM_INVENTORY_FULFILLED";
 export const LOCATION_HISTORY_REQUESTED = 'LOCATION_HISTORY_REQUESTED';
 export const LOCATION_HISTORY_FULFILLED = 'LOCATION_HISTORY_FULFILLED';
 export const LOCATION_HISTORY_REJECTED = 'LOCATION_HISTORY_REJECTED';
+export const PARENT_HISTORY_FULFILLED = 'PARENT_HISTORY_FULFILLED';
 
 const firebaseConfig = {
     apiKey: config.apiKey,
@@ -507,22 +508,23 @@ function itemInventoryFulfilled(inventory) {
 
 //find previous locations
 export function findLocationHistory(skuId, typeId) {
-  console.log(typeId)
   return dispatch => {
     dispatch(locationHistoryRequested());
     return firebase.database().ref("previousLocations").orderByChild(typeId).equalTo(skuId).once('value', snap => {
       var historyArr = [];
       if (typeId === "parent_sku") {
         snap.forEach(function(snap) {
-          console.log(snap.val())
           let history = {
             key: snap.key,
+            sku: snap.val().sku,
             submitDate: snap.val().changeDate,
             field: snap.val().changeField,
             locationMoved: snap.val().changeLoc
           }
           historyArr.push(history);
        });
+       const history = historyArr;
+       dispatch(parentsHistoryFulfilled(historyArr))
       } else {
         snap.forEach(function(snap) {
           let history = {
@@ -533,9 +535,10 @@ export function findLocationHistory(skuId, typeId) {
           }
           historyArr.push(history);
        });
+       const history = historyArr;
+       dispatch(locationHistoryFulfilled(historyArr))
       }
-      const history = historyArr;
-      dispatch(locationHistoryFulfilled(historyArr))
+      
     })
     .catch((error) => {
       console.log(error);
@@ -562,3 +565,11 @@ function locationHistoryFulfilled(historyArr) {
     payload: historyArr
   };
 }
+
+function parentsHistoryFulfilled(historyArr) {
+  return {
+    type: PARENT_HISTORY_FULFILLED,
+    payload: historyArr
+  };
+}
+
