@@ -17,9 +17,9 @@ class ItemDetail extends Component {
   toggleLocationsView(sku, skuField) {
     this.props.actions.findLocationHistory(sku, skuField);
   }
-  
-  toggleParentLocations(parent) {
-    console.log(parent);
+
+  toggleUpcView(sku) {
+    this.props.actions.findUpcHistory(sku);
   }
 
   render() {
@@ -28,7 +28,7 @@ class ItemDetail extends Component {
         <div className="go-back">
           <Link to='/inventory' className="detail-link second after">Go Back</Link>
         </div>
-        <ItemView item={this.props.inventory} locHistory={this.props.locHistory} toggleLocations={this.toggleLocationsView.bind(this)} locationsVisible={this.props.locationsVisible} parentsVisible={this.props.parentsVisible} />
+        <ItemView item={this.props.inventory} locHistory={this.props.locHistory} toggleLocations={this.toggleLocationsView.bind(this)} toggleUpc={this.toggleUpcView.bind(this)} upcVisible={this.props.upcVisible} locationsVisible={this.props.locationsVisible} parentsVisible={this.props.parentsVisible} />
       </div>
     );
   }
@@ -42,7 +42,8 @@ function mapStateToProps(state) {
       inventory: state.item.data[0],
       locHistory: state.item.locationHistory,
       locationsVisible: state.item.locationsVisible,
-      parentsVisible: state.item.parentsVisible
+      parentsVisible: state.item.parentsVisible,
+      upcVisible: state.item.upcVisible
     };
   }
 }

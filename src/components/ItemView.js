@@ -6,7 +6,7 @@ import '../styles/item.css';
 
 export default class ItemView extends Component {
   render() {
-    const { toggleLocations, locationsVisible, parentsVisible, locHistory } = this.props;
+    const { toggleLocations, toggleUpc, locationsVisible, parentsVisible, upcVisible, locHistory } = this.props;
 
     if (locHistory && (locationsVisible || parentsVisible)) {
       var historyNode = this.props.locHistory.map((history, index) => {
@@ -16,6 +16,15 @@ export default class ItemView extends Component {
             <td>{history.submitDate}</td>
             <td>{history.field}</td>
             <td>{history.locationMoved}</td>
+          </tr>
+        );
+      });
+    } else if (locHistory && upcVisible) {
+      var historyNode = this.props.locHistory.map((history, index) => {
+        return (
+          <tr key={index}>
+            <td>{history.submitDate}</td>
+            <td>{history.changeUpc}</td>
           </tr>
         );
       });
@@ -58,8 +67,9 @@ export default class ItemView extends Component {
                   <p>Inline: <strong>{this.props.item.inline}</strong></p>
                   <p>Notes/Flags: <strong>{this.props.item.caFlag}</strong></p>
                   <div className="btn-group">
-                    <button type="button" onClick={() => toggleLocations(this.props.item.sku, "sku")} className="btn btn-primary history-button">View Previous Locations</button>
-                    { (this.props.item.parentSku) ? <button type="button" onClick={() => toggleLocations(this.props.item.parentSku, "parent_sku")} className="btn btn-primary history-button">View Parent Locations</button> : null }  
+                    <button type="button" onClick={() => toggleUpc(this.props.item.sku)} className="btn btn-primary">View Previous UPCs</button>
+                    <button type="button" onClick={() => toggleLocations(this.props.item.sku, "sku")} className="btn btn-primary">View Previous Locations</button>
+                    { (this.props.item.parentSku) ? <button type="button" onClick={() => toggleLocations(this.props.item.parentSku, "parent_sku")} className="btn btn-primary">View Parent Locations</button> : null }  
                   </div>
                 </div>
               </div>

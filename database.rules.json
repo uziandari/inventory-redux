@@ -28,6 +28,11 @@
       ".indexOn" : ["sku", "parent_sku"],
       ".read": "auth != null",
       ".write": "auth != null"
+    },
+    "previousProductCodes" : {
+      ".indexOn" : "sku",
+      ".read": "auth != null",
+      ".write": "auth != null"
     }
   }
 }

@@ -51,6 +51,7 @@ export const LOCATION_HISTORY_REQUESTED = 'LOCATION_HISTORY_REQUESTED';
 export const LOCATION_HISTORY_FULFILLED = 'LOCATION_HISTORY_FULFILLED';
 export const LOCATION_HISTORY_REJECTED = 'LOCATION_HISTORY_REJECTED';
 export const PARENT_HISTORY_FULFILLED = 'PARENT_HISTORY_FULFILLED';
+export const PRODUCTCODE_HISTORY_FULFILLED = 'PRODUCTCODE_HISTORY_FULFILLED';
 
 const firebaseConfig = {
     apiKey: config.apiKey,
@@ -573,3 +574,33 @@ function parentsHistoryFulfilled(historyArr) {
   };
 }
 
+function upcHistoryFulfilled(historyArr) {
+  return {
+    type: PRODUCTCODE_HISTORY_FULFILLED,
+    payload: historyArr
+  };
+}
+
+//find previous upcs
+export function findUpcHistory(skuId) {
+  return dispatch => {
+    dispatch(locationHistoryRequested());
+    return firebase.database().ref("previousProductCodes").orderByChild("sku").equalTo(skuId).once('value', snap => {
+      var historyArr = [];
+      snap.forEach(function(snap) {
+        let history = {
+          key: snap.key,
+          submitDate: snap.val().changeDate,
+          changeUpc: snap.val().changeUpc
+        }
+        historyArr.push(history);
+      });
+      const history = historyArr;
+      dispatch(upcHistoryFulfilled(historyArr))
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch(locationHistoryRejected());
+    });
+  }
+}
