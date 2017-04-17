@@ -33,6 +33,11 @@
       ".indexOn" : "sku",
       ".read": "auth != null",
       ".write": "auth != null"
+    },
+      "searchLog" : {
+      ".indexOn" : ["user", "searchTerm"],
+      ".read": "root.child('users/' + auth.uid).exists() && root.child('users').child(auth.uid).child('roles').child('administrator').val() === true",
+      ".write": "auth != null"
     }
   }
 }

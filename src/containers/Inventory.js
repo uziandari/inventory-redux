@@ -14,7 +14,8 @@ class Inventory extends React.Component {
         <h1>Inventory</h1>
         <SearchBar onTermChange={this.props.actions.searchInventory} 
                    onFieldChange={this.props.actions.changeSearchField}
-                   field={this.props.searchField} />
+                   field={this.props.searchField.searchField}
+                   fields={this.props.searchField.searchFields} />
         <InventoryList inventory={this.props.inventory} />
       </div>
     );
@@ -24,7 +25,8 @@ class Inventory extends React.Component {
 function mapStateToProps(state) {
   return {
     inventory: state.inventory.data,
-    searchField: state.searchField
+    searchField: state.searchField,
+    searchFields: state.searchFields
   };
 }
 

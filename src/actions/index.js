@@ -128,42 +128,46 @@ export function changeLocationField(searchField) {
 
 export function searchInventory(term, searchField) {
 
-  //pad upc
-   
-  if (searchField === 'upc') {
-    let pad = "000000000000";
-    term = pad.substring(0, pad.length - term.length) + term;
-  }
-
   return dispatch => {
-    dispatch(searchInventoryRequested());
-    return firebase.database().ref("inventory").orderByChild(searchField).equalTo(term.toUpperCase().trim()).limitToFirst(40).once('value', snap => {
-      var itemsArr = [];
-        snap.forEach(function(snap) {
-            let item = {
-              key: snap.key,
-              sku: snap.val().sku,
-              description: snap.val().description,
-              upc: snap.val().upc,
-              location: snap.val().location,
-              imgUrl: snap.val().img_url,
-              backstock: snap.val().backstock,
-              inline: snap.val().inline,
-              parentSku: snap.val().parent_sku,
-              stock: snap.val().stock,
-              committed: snap.val().committed
-            }  
-          itemsArr.push(item);
-        });
-      const inventory = itemsArr;
-      dispatch(searchInventoryFulfilled(inventory))
-    })
-    .catch((error) => {
-      console.log(error);
-      dispatch(searchInventoryRejected());
-    });
+    if (term !== '') {
+      dispatch(searchInventoryRequested());
+      return firebase.database().ref("inventory").orderByChild(searchField).equalTo(term.toUpperCase().trim()).limitToFirst(40).once('value', snap => {
+        var itemsArr = [];
+          snap.forEach(function(snap) {
+              let item = {
+                key: snap.key,
+                sku: snap.val().sku,
+                description: snap.val().description,
+                upc: snap.val().upc,
+                location: snap.val().location,
+                imgUrl: snap.val().img_url,
+                backstock: snap.val().backstock,
+                inline: snap.val().inline,
+                parentSku: snap.val().parent_sku,
+                stock: snap.val().stock,
+                committed: snap.val().committed
+              }  
+            itemsArr.push(item);
+          });
+        const inventory = itemsArr;
+        dispatch(searchInventoryFulfilled(inventory));
+        if (inventory.length > 0 && term.length > 1) {
+          console.log(inventory);
+          firebase.database().ref("searchLog").push({
+            user: firebase.auth().currentUser.email,
+            searchTerm: term,
+            returnData: inventory
+          })
+        }
+      })
+      .catch((error) => {
+        console.log(error);
+        dispatch(searchInventoryRejected());
+      });
+    }
   }
 }
+
 
 function searchInventoryRequested() {
   return {
@@ -202,9 +206,7 @@ export function addReturn(values) {
 
   return dispatch => {
     values.submitTime = moment().format('MM/DD/YYYY h:m');
-    let pad = "000000000000";
-    values.upc = pad.substring(0, pad.length - values.upc.length) + values.upc;
-  
+
     dispatch(searchInventoryRequested());
     return firebase.database().ref("inventory").orderByChild('upc').equalTo(values.upc.toUpperCase().trim()).once('value', snap => {
       var itemsArr = [];

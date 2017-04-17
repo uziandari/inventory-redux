@@ -12,12 +12,15 @@ export default class LocationSearch extends Component {
   fieldChange(locationField) {
     this.props.onFieldChange(locationField);
   }
+
+  componentWillUnmount() {
+    this.fieldChange('location');
+  }
   
   render() {
     return (
       <div className="location-search">
         <select className="form-control location-field-selector" name="locationField" value={this.props.locationField} onChange={event => this.fieldChange(event.target.value)}>
-            <option></option>
             <option value="location">Location</option>      
             <option value="bin_size">Size</option>          
         </select>

@@ -1,7 +1,11 @@
 import { CHANGE_FIELD } from '../actions';
 
 const initialState = {
-  searchField: 'upc'
+  searchField: 'upc',
+  searchFields: [{ label: 'UPC', value: 'upc' },
+      { label: 'Location', value: 'location' },
+      { label: 'SKU', value: 'sku' },
+      { label: 'Parent', value: 'parent_sku' }]
 };
 
 export default function changeField(state = initialState, action) {
