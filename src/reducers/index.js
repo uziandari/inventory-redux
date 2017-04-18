@@ -11,6 +11,7 @@ import ModalReducer from './returnModal';
 import ReturnViewReducer from './returnView';
 import AdjustmentsReducer from './adjustments';
 import ItemReducer from './item';
+import ReceiptReducer from './receipt';
 
 
 const rootReducer = combineReducers({
@@ -25,7 +26,8 @@ const rootReducer = combineReducers({
   locations: LocationReducer,
   locationField: LocationFieldReducer,
   adjustments: AdjustmentsReducer,
-  item: ItemReducer
+  item: ItemReducer,
+  receipt: ReceiptReducer
 });
 
 export default rootReducer;

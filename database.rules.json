@@ -35,7 +35,7 @@
       ".write": "auth != null"
     },
     "previousReceipts" : {
-      ".indexOn" : "sku",
+      ".indexOn" : ["sku", "document"],
       ".read": "auth != null",
       ".write": "auth != null"
     },

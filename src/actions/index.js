@@ -54,6 +54,12 @@ export const PARENT_HISTORY_FULFILLED = 'PARENT_HISTORY_FULFILLED';
 export const PRODUCTCODE_HISTORY_FULFILLED = 'PRODUCTCODE_HISTORY_FULFILLED';
 export const RECEIPT_HISTORY_FULFILLED = 'RECEIPT_HISTORY_FULFILLED';
 
+//receipt lookup
+export const RECEIPT_HISTORY_REQUESTED = 'RECEIPT_HISTORY_REQUESTED';
+export const RECEIPT_LOOKUP_FULFILLED = 'RECEIPT_LOOKUP_FULFILLED';
+export const RECEIPT_HISTORY_REJECTED = 'RECEIPT_HISTORY_REJECTED';
+
+
 const firebaseConfig = {
     apiKey: config.apiKey,
     authDomain: config.authDomain,
@@ -643,4 +649,53 @@ export function findReceiptHistory(skuId) {
       dispatch(locationHistoryRejected());
     });
   }
+}
+
+export function receiptInventory(docId) {
+  return dispatch => {
+    dispatch(receiptHistoryRequested());
+    return firebase.database().ref("previousReceipts").orderByChild("document").equalTo(parseInt(docId)).once('value', receiptSnap => {
+      var receipts = [];
+      receiptSnap.forEach(function(receiptSnap) {
+        firebase.database().ref("inventory").orderByChild("sku").equalTo(receiptSnap.val().sku).once('value', itemSnap => {
+          itemSnap.forEach(function(itemSnap) {
+            let lookup = {
+              key: receiptSnap.key,
+              sku: receiptSnap.val().sku,
+              quantityReceived: receiptSnap.val().quantity,
+              description: itemSnap.val().description,
+              currentLocation: itemSnap.val().location,
+              currentBackstock: itemSnap.val().backstock,
+              currentQuantity: itemSnap.val().stock
+            };
+            receipts.push(lookup);
+          })
+        });
+      });
+      dispatch(receiptLookupFulfilled(receipts))
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch(receiptHistoryRejected());
+    });
+  }
+}
+
+function receiptHistoryRequested() {
+  return {
+    type: RECEIPT_HISTORY_REQUESTED
+  };
+}
+
+function receiptHistoryRejected() {
+  return {
+    type: RECEIPT_HISTORY_REJECTED
+  }
+}
+
+function receiptLookupFulfilled(receipts) {
+  return {
+    type: RECEIPT_LOOKUP_FULFILLED,
+    payload: receipts
+  };
 }

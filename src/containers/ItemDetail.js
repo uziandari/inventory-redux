@@ -6,7 +6,6 @@ import { Link } from 'react-router';
 
 //item component
 import ItemView from '../components/ItemView';
-import Inventory from './Inventory';
 
 class ItemDetail extends Component {
 

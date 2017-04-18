@@ -1,4 +1,7 @@
 import React, { Component } from 'react';
+import ReceiptView from '../components/ReceiptView';
+import { Link } from 'react-router';
+
 
 
 //import style
@@ -33,7 +36,7 @@ export default class ItemView extends Component {
         return (
           <tr key={index}>
             <td>{history.receiptDate}</td>
-            <td>{history.documentNumber}</td>
+            <td><Link to={`/receipt/${history.documentNumber}`}>{history.documentNumber}</Link></td>
             <td>{history.quantityReceived}</td>
             <td>{history.type}</td>
           </tr>

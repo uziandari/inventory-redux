@@ -12,6 +12,7 @@ import Returns from './containers/Returns';
 import ReturnView from './containers/ReturnView';
 import RequireAuth from './containers/RequireAuth';
 import Adjustments from './containers/Adjustments';
+import Receipts from './containers/Receipts';
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import { Provider } from 'react-redux';
 import configureStore from './store/configureStore';
@@ -34,6 +35,7 @@ ReactDOM.render(
         <Route path="inventory" component={RequireAuth(Inventory)} />
         <Route path="inventory/locations" component={RequireAuth(Locations)} />
         <Route path="inventory/:id" component={RequireAuth(ItemDetail)} />
+        <Route path="receipt/:id" component={RequireAuth(Receipts)} />
         <Route path="returns/add" component={RequireAuth(Returns)} />
         <Route path="returns/view" component={RequireAuth(ReturnView)} />
         <Route path="adjustments" component={RequireAuth(Adjustments)} />
