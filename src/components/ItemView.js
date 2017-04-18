@@ -6,7 +6,7 @@ import '../styles/item.css';
 
 export default class ItemView extends Component {
   render() {
-    const { toggleLocations, toggleUpc, locationsVisible, parentsVisible, upcVisible, locHistory } = this.props;
+    const { toggleLocations, toggleUpc, toggleReceipts, locationsVisible, parentsVisible, upcVisible, receiptVisible, locHistory } = this.props;
 
     if (locHistory && (locationsVisible || parentsVisible)) {
       var historyNode = this.props.locHistory.map((history, index) => {
@@ -25,6 +25,17 @@ export default class ItemView extends Component {
           <tr key={index}>
             <td>{history.submitDate}</td>
             <td>{history.changeUpc}</td>
+          </tr>
+        );
+      });
+    } else if (locHistory && receiptVisible) {
+      var historyNode = this.props.locHistory.map((history, index) => {
+        return (
+          <tr key={index}>
+            <td>{history.receiptDate}</td>
+            <td>{history.documentNumber}</td>
+            <td>{history.quantityReceived}</td>
+            <td>{history.type}</td>
           </tr>
         );
       });
@@ -52,6 +63,11 @@ export default class ItemView extends Component {
                   { (this.props.item.parentSku) ? <p>Parent: <strong>{this.props.item.parentSku}</strong></p> : null }
                   <p>UPC: <strong>{this.props.item.upc}</strong></p>
                   <hr />
+                  <h3>Location: <strong>{this.props.item.location}</strong></h3>
+                  {this.props.item.backstock ? <h4>Backstock: {this.props.item.backstock}</h4> : <div></div>}
+                  <p>Inline: <strong>{this.props.item.inline}</strong></p>
+                  <p>Notes/Flags: <strong>{this.props.item.caFlag}</strong></p>
+                  <hr />
                   <ul>
                     <li>NS Stock: <strong>{this.props.item.stock}</strong></li>
                     <li>NS Committed: <strong>{this.props.item.committed}</strong></li>
@@ -63,13 +79,11 @@ export default class ItemView extends Component {
                     <li>CA Pending: <strong>{this.props.item.caPending}</strong></li>
                   </ul>
                   <hr />
-                  <h3>Location: <strong>{this.props.item.location}</strong> | {this.props.item.backstock}</h3>
-                  <p>Inline: <strong>{this.props.item.inline}</strong></p>
-                  <p>Notes/Flags: <strong>{this.props.item.caFlag}</strong></p>
                   <div className="btn-group">
-                    <button type="button" onClick={() => toggleUpc(this.props.item.sku)} className="btn btn-primary">View Previous UPCs</button>
-                    <button type="button" onClick={() => toggleLocations(this.props.item.sku, "sku")} className="btn btn-primary">View Previous Locations</button>
-                    { (this.props.item.parentSku) ? <button type="button" onClick={() => toggleLocations(this.props.item.parentSku, "parent_sku")} className="btn btn-primary">View Parent Locations</button> : null }  
+                    <button type="button" onClick={() => toggleUpc(this.props.item.sku)} className="btn btn-primary btn-sm">Past UPCs</button>
+                    <button type="button" onClick={() => toggleLocations(this.props.item.sku, "sku")} className="btn btn-primary btn-sm">Past Locations</button>
+                    { (this.props.item.parentSku) ? <button type="button" onClick={() => toggleLocations(this.props.item.parentSku, "parent_sku")} className="btn btn-primary btn-sm">Parent Locations</button> : null }  
+                    <button type="button" onClick={() => toggleReceipts(this.props.item.sku)} className="btn btn-primary btn-sm">Receipts</button>
                   </div>
                 </div>
               </div>

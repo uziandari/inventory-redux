@@ -52,6 +52,7 @@ export const LOCATION_HISTORY_FULFILLED = 'LOCATION_HISTORY_FULFILLED';
 export const LOCATION_HISTORY_REJECTED = 'LOCATION_HISTORY_REJECTED';
 export const PARENT_HISTORY_FULFILLED = 'PARENT_HISTORY_FULFILLED';
 export const PRODUCTCODE_HISTORY_FULFILLED = 'PRODUCTCODE_HISTORY_FULFILLED';
+export const RECEIPT_HISTORY_FULFILLED = 'RECEIPT_HISTORY_FULFILLED';
 
 const firebaseConfig = {
     apiKey: config.apiKey,
@@ -517,10 +518,11 @@ export function findLocationHistory(skuId, typeId) {
       var historyArr = [];
       if (typeId === "parent_sku") {
         snap.forEach(function(snap) {
+          let locTime = moment(snap.val().changeDate).format('MM-DD-YYYY')
           let history = {
             key: snap.key,
             sku: snap.val().sku,
-            submitDate: snap.val().changeDate,
+            submitDate: locTime,
             field: snap.val().changeField,
             locationMoved: snap.val().changeLoc
           }
@@ -530,16 +532,17 @@ export function findLocationHistory(skuId, typeId) {
        dispatch(parentsHistoryFulfilled(historyArr))
       } else {
         snap.forEach(function(snap) {
+          let locTime = moment(snap.val().changeDate).format('MM-DD-YYYY')
           let history = {
             key: snap.key,
-            submitDate: snap.val().changeDate,
+            submitDate: locTime,
             field: snap.val().changeField,
             locationMoved: snap.val().changeLoc
           }
           historyArr.push(history);
        });
        const history = historyArr;
-       dispatch(locationHistoryFulfilled(historyArr))
+       dispatch(locationHistoryFulfilled(history))
       }
       
     })
@@ -583,6 +586,13 @@ function upcHistoryFulfilled(historyArr) {
   };
 }
 
+function receiptHistoryFulfilled(historyArr) {
+  return {
+    type: RECEIPT_HISTORY_FULFILLED,
+    payload: historyArr
+  };
+}
+
 //find previous upcs
 export function findUpcHistory(skuId) {
   return dispatch => {
@@ -590,15 +600,43 @@ export function findUpcHistory(skuId) {
     return firebase.database().ref("previousProductCodes").orderByChild("sku").equalTo(skuId).once('value', snap => {
       var historyArr = [];
       snap.forEach(function(snap) {
+        let upcTime = moment(snap.val().changeDate).format('MM-DD-YYYY')
         let history = {
           key: snap.key,
-          submitDate: snap.val().changeDate,
+          submitDate: upcTime,
           changeUpc: snap.val().changeUpc
         }
         historyArr.push(history);
       });
       const history = historyArr;
-      dispatch(upcHistoryFulfilled(historyArr))
+      dispatch(upcHistoryFulfilled(history))
+    })
+    .catch((error) => {
+      console.log(error);
+      dispatch(locationHistoryRejected());
+    });
+  }
+}
+
+//find receipts
+export function findReceiptHistory(skuId) {
+  return dispatch => {
+    dispatch(locationHistoryRequested());
+    return firebase.database().ref("previousReceipts").orderByChild("sku").equalTo(skuId).once('value', snap => {
+      var historyArr = [];
+      snap.forEach(function(snap) {
+        let receiptTime = moment(snap.val().receiptDate).format('MM-DD-YYYY')
+        let history = {
+          key: snap.key,
+          receiptDate: receiptTime,
+          documentNumber: snap.val().document,
+          quantityReceived: snap.val().quantity,
+          type: snap.val().type
+        }
+        historyArr.push(history);
+      });
+      const history = historyArr;
+      dispatch(receiptHistoryFulfilled(history))
     })
     .catch((error) => {
       console.log(error);

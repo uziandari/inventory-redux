@@ -9,6 +9,11 @@ export default class UserHome extends Component {
       <div id="user-home">
         <h1>What's New</h1>
         <div className="update-list">
+          <h3>-4/18/2017-</h3>
+          <ul>
+            <li>Receipt history added to item detail page.</li>
+            <li>Changes to search field functionality on page load.</li>
+          </ul>
           <h3>-4/14/2017-</h3>
           <ul>
             <li>UPC history added to item detail page.</li>
