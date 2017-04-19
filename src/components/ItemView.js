@@ -1,7 +1,5 @@
 import React, { Component } from 'react';
-import ReceiptView from '../components/ReceiptView';
 import { Link } from 'react-router';
-
 
 
 //import style
@@ -9,7 +7,7 @@ import '../styles/item.css';
 
 export default class ItemView extends Component {
   render() {
-    const { toggleLocations, toggleUpc, toggleReceipts, locationsVisible, parentsVisible, upcVisible, receiptVisible, locHistory } = this.props;
+    const { toggleLocations, toggleUpc, toggleReceipts, locationsVisible, parentsVisible, upcVisible, receiptVisible, locHistory, findReceipt } = this.props;
 
     if (locHistory && (locationsVisible || parentsVisible)) {
       var historyNode = this.props.locHistory.map((history, index) => {
@@ -36,7 +34,7 @@ export default class ItemView extends Component {
         return (
           <tr key={index}>
             <td>{history.receiptDate}</td>
-            <td><Link to={`/receipt/${history.documentNumber}`}>{history.documentNumber}</Link></td>
+            <td><button onClick={() => findReceipt(history.documentNumber)}>{history.documentNumber}</button></td>
             <td>{history.quantityReceived}</td>
             <td>{history.type}</td>
           </tr>

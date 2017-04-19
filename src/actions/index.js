@@ -652,10 +652,11 @@ export function findReceiptHistory(skuId) {
 }
 
 export function receiptInventory(docId) {
+  console.log(`document is: ${docId}`)
   return dispatch => {
+    var receipts = [];
     dispatch(receiptHistoryRequested());
     return firebase.database().ref("previousReceipts").orderByChild("document").equalTo(parseInt(docId)).once('value', receiptSnap => {
-      var receipts = [];
       receiptSnap.forEach(function(receiptSnap) {
         firebase.database().ref("inventory").orderByChild("sku").equalTo(receiptSnap.val().sku).once('value', itemSnap => {
           itemSnap.forEach(function(itemSnap) {
@@ -672,8 +673,11 @@ export function receiptInventory(docId) {
           })
         });
       });
-      dispatch(receiptLookupFulfilled(receipts))
     })
+    .then(response => {
+      dispatch(receiptLookupFulfilled(receipts))
+      browserHistory.push(`/receipt/${docId}`);
+    }) 
     .catch((error) => {
       console.log(error);
       dispatch(receiptHistoryRejected());

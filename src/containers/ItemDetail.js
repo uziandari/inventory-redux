@@ -38,7 +38,8 @@ class ItemDetail extends Component {
                   upcVisible={this.props.upcVisible} 
                   locationsVisible={this.props.locationsVisible} 
                   parentsVisible={this.props.parentsVisible} 
-                  receiptVisible={this.props.receiptVisible} />
+                  receiptVisible={this.props.receiptVisible}
+                  findReceipt={this.props.actions.receiptInventory.bind(this)} />
       </div>
     );
   }

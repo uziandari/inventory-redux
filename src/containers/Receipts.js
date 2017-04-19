@@ -1,23 +1,30 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
-import { Link } from 'react-router';
+import ReceiptList from '../components/ReceiptList';
 
-//component
-import ReceiptView from '../components/ReceiptView';
+//style
+import '../styles/adjustments.css';
 
-class Receipts extends Component {
-
-  componentDidMount() {
-    this.props.actions.receiptInventory(this.props.params.id);
-  }
-
-
+class Receipts extends React.Component {
   render() {
+    console.log(this.props)
     return (
-      <div id="receipt-section">
-        <ReceiptView receipts={this.props.receipts} />
+      <div>
+        <table className="table table-hover table-condensed adj-table">
+          <thead>
+            <tr>
+              <th>SKU</th>
+              <th>Description</th>
+              <th>Quantity Received</th>
+              <th>Current Locations</th>
+              <th>Current Backstock</th>
+              <th>Current Quantity</th>
+            </tr>
+          </thead>
+          <ReceiptList receipts={this.props.receipts} />
+        </table>
       </div>
     );
   }
@@ -25,8 +32,8 @@ class Receipts extends Component {
 
 function mapStateToProps(state) {
   return {
-    receipts: state.receipt.receipts,    
-  };  
+    receipts: state.receipt.receipts
+  };
 }
 
 function mapDispatchToProps(dispatch) {
@@ -36,4 +43,5 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Receipts);
+
 
