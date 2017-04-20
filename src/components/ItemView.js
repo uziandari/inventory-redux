@@ -1,14 +1,15 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router';
 
+import ReceiptList from './ReceiptList'
+
 
 //import style
 import '../styles/item.css';
 
 export default class ItemView extends Component {
   render() {
-    const { toggleLocations, toggleUpc, toggleReceipts, locationsVisible, parentsVisible, upcVisible, receiptVisible, locHistory, findReceipt } = this.props;
-
+    const { toggleLocations, toggleUpc, toggleReceipts, locationsVisible, parentsVisible, upcVisible, receiptVisible, locHistory, findReceipt, receipts, isVisible } = this.props;
     if (locHistory && (locationsVisible || parentsVisible)) {
       var historyNode = this.props.locHistory.map((history, index) => {
         return (
@@ -96,6 +97,8 @@ export default class ItemView extends Component {
                 {historyNode}
               </tbody>
             </table>
+            {console.log(receipts)}
+            {isVisible ? receipts.length > 0 ? <ReceiptList receiptId={receipts}/> : <h3>Loading</h3> : null}
           </div>
         </div>
       );

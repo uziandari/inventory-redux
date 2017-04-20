@@ -1,8 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router';
 
-const ReceiptList = (props) => {
-  const receiptItems = props.receipts.map((item, index) => {
+const ReceiptList = (receiptId) => {
+  console.log(receiptId)
+  const receiptItems = receiptId.receiptId.map((item, index) => {
     return (
       <tr key={index}>
         <td><Link to={`/inventory/${item.sku}`}>{item.sku}</Link></td> 
@@ -15,9 +16,22 @@ const ReceiptList = (props) => {
     ); 
   });
   return (
-    <tbody>
-      {receiptItems}
-    </tbody>
+    <table>
+      <thead>
+        <tr>
+          <th>SKU</th>
+          <th>Description</th>
+          <th># Received</th>
+          <th>Current Location</th>
+          <th>Current Backstock</th>
+          <th>Current #</th>
+        </tr>
+      </thead>
+      <tbody>
+        {receiptItems}
+      </tbody>
+    </table>
+    
   );
 }
 

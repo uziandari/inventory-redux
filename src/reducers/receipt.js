@@ -1,7 +1,8 @@
-import { RECEIPT_LOOKUP_FULFILLED } from '../actions';
+import { RECEIPT_LOOKUP_FULFILLED, RECEIPT_VISIBLE } from '../actions';
 
 const initialState = {
-  receipts: []
+  receipts: [],
+  isVisible: false
 };
 
 export default function searchInventory(state = initialState, action) {
@@ -9,7 +10,12 @@ export default function searchInventory(state = initialState, action) {
     case RECEIPT_LOOKUP_FULFILLED:
       return {
         ...state,
-        receipts: action.payload
+        receipts: action.payload,
+      }
+    case RECEIPT_VISIBLE:
+      return {
+        ...state,
+        isVisible: !state.isVisible
       }
     default:
       return state;

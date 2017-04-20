@@ -4,15 +4,12 @@ import { bindActionCreators } from 'redux';
 import * as Actions from '../actions';
 import ReceiptList from '../components/ReceiptList';
 
-//style
-import '../styles/adjustments.css';
-
 class Receipts extends React.Component {
+  
   render() {
-    console.log(this.props)
     return (
       <div>
-        <table className="table table-hover table-condensed adj-table">
+        <table className="table table-hover table-condensed">
           <thead>
             <tr>
               <th>SKU</th>
@@ -23,7 +20,8 @@ class Receipts extends React.Component {
               <th>Current Quantity</th>
             </tr>
           </thead>
-          <ReceiptList receipts={this.props.receipts} />
+          {this.props.receipts.length}
+          
         </table>
       </div>
     );

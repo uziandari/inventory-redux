@@ -58,6 +58,7 @@ export const RECEIPT_HISTORY_FULFILLED = 'RECEIPT_HISTORY_FULFILLED';
 export const RECEIPT_HISTORY_REQUESTED = 'RECEIPT_HISTORY_REQUESTED';
 export const RECEIPT_LOOKUP_FULFILLED = 'RECEIPT_LOOKUP_FULFILLED';
 export const RECEIPT_HISTORY_REJECTED = 'RECEIPT_HISTORY_REJECTED';
+export const RECEIPT_VISIBLE = 'RECEIPT_VISIBLE';
 
 
 const firebaseConfig = {
@@ -652,13 +653,13 @@ export function findReceiptHistory(skuId) {
 }
 
 export function receiptInventory(docId) {
-  console.log(`document is: ${docId}`)
   return dispatch => {
     var receipts = [];
+    dispatch(toggleReceiptVisible())
     dispatch(receiptHistoryRequested());
     return firebase.database().ref("previousReceipts").orderByChild("document").equalTo(parseInt(docId)).once('value', receiptSnap => {
       receiptSnap.forEach(function(receiptSnap) {
-        firebase.database().ref("inventory").orderByChild("sku").equalTo(receiptSnap.val().sku).once('value', itemSnap => {
+         firebase.database().ref("inventory").orderByChild("sku").equalTo(receiptSnap.val().sku).once('value', itemSnap => {
           itemSnap.forEach(function(itemSnap) {
             let lookup = {
               key: receiptSnap.key,
@@ -669,15 +670,14 @@ export function receiptInventory(docId) {
               currentBackstock: itemSnap.val().backstock,
               currentQuantity: itemSnap.val().stock
             };
-            receipts.push(lookup);
+            receipts.push(lookup);  
           })
-        });
+        })   
       });
     })
     .then(response => {
-      dispatch(receiptLookupFulfilled(receipts))
-      browserHistory.push(`/receipt/${docId}`);
-    }) 
+          dispatch(receiptLookupFulfilled(receipts));  
+      })
     .catch((error) => {
       console.log(error);
       dispatch(receiptHistoryRejected());
@@ -702,4 +702,10 @@ function receiptLookupFulfilled(receipts) {
     type: RECEIPT_LOOKUP_FULFILLED,
     payload: receipts
   };
+}
+
+function toggleReceiptVisible() {
+  return {
+    type: RECEIPT_VISIBLE
+  }
 }

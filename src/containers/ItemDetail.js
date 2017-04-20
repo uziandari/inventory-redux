@@ -39,7 +39,9 @@ class ItemDetail extends Component {
                   locationsVisible={this.props.locationsVisible} 
                   parentsVisible={this.props.parentsVisible} 
                   receiptVisible={this.props.receiptVisible}
-                  findReceipt={this.props.actions.receiptInventory.bind(this)} />
+                  findReceipt={this.props.actions.receiptInventory} 
+                  receipts ={this.props.receipts}
+                  isVisible ={this.props.isVisible} />
       </div>
     );
   }
@@ -55,7 +57,9 @@ function mapStateToProps(state) {
       locationsVisible: state.item.locationsVisible,
       parentsVisible: state.item.parentsVisible,
       upcVisible: state.item.upcVisible,
-      receiptVisible: state.item.receiptVisible
+      receiptVisible: state.item.receiptVisible,
+      receipts: state.receipt.receipts,
+      isVisible: state.receipt.isVisible
     };
   }
 }
