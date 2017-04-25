@@ -58,7 +58,7 @@ export const RECEIPT_HISTORY_FULFILLED = 'RECEIPT_HISTORY_FULFILLED';
 export const RECEIPT_HISTORY_REQUESTED = 'RECEIPT_HISTORY_REQUESTED';
 export const RECEIPT_LOOKUP_FULFILLED = 'RECEIPT_LOOKUP_FULFILLED';
 export const RECEIPT_HISTORY_REJECTED = 'RECEIPT_HISTORY_REJECTED';
-export const RECEIPT_VISIBLE = 'RECEIPT_VISIBLE';
+export const RECEIPT_DOCUMENT_FULFILLED = 'RECEIPT_DOCUMENT_FULFILLED';
 
 
 const firebaseConfig = {
@@ -600,6 +600,13 @@ function receiptHistoryFulfilled(historyArr) {
   };
 }
 
+function receiptDocumentFulfilled(historyArr) {
+  return {
+    type: RECEIPT_DOCUMENT_FULFILLED,
+    payload: historyArr
+  }
+}
+
 //find previous upcs
 export function findUpcHistory(skuId) {
   return dispatch => {
@@ -626,86 +633,49 @@ export function findUpcHistory(skuId) {
 }
 
 //find receipts
-export function findReceiptHistory(skuId) {
+export function findReceiptHistory(id, searchField) {
   return dispatch => {
     dispatch(locationHistoryRequested());
-    return firebase.database().ref("previousReceipts").orderByChild("sku").equalTo(skuId).once('value', snap => {
+     return firebase.database().ref("previousReceipts").orderByChild(searchField).equalTo(id).once('value', snap => {
       var historyArr = [];
-      snap.forEach(function(snap) {
-        let receiptTime = moment(snap.val().receiptDate).format('MM-DD-YYYY')
-        let history = {
-          key: snap.key,
-          receiptDate: receiptTime,
-          documentNumber: snap.val().document,
-          quantityReceived: snap.val().quantity,
-          type: snap.val().type
-        }
-        historyArr.push(history);
-      });
-      const history = historyArr;
-      dispatch(receiptHistoryFulfilled(history))
+      if (searchField === "sku") {
+        snap.forEach(function(snap) {
+          console.log(snap.val())
+          let receiptTime = moment(snap.val().changeDate).format('MM-DD-YYYY')
+          let history = {
+            key: snap.key,
+            receiptDate: receiptTime,
+            documentNumber: snap.val().document,
+            quantityReceived: snap.val().quantity,
+            type: snap.val().type
+          }
+          historyArr.push(history);
+       });
+       const history = historyArr;
+       dispatch(receiptHistoryFulfilled(historyArr))
+      } else {
+        snap.forEach(function(snap) {
+          let history = {
+            key: snap.key,
+            sku: snap.val().sku,
+            description: snap.val().description,
+            upc: snap.val().upc,
+            currentLocation: snap.val().currentLocation,
+            currentBackstock: snap.val().currentBackstock,
+            currentStock: snap.val().currentStock,
+            currentCommitted: snap.val().currentCommitted,
+            quantityReceived: snap.val().quantity
+          }      
+          historyArr.push(history);
+       });
+       const history = historyArr;
+       dispatch(receiptDocumentFulfilled(history))
+      }
+      
     })
     .catch((error) => {
       console.log(error);
       dispatch(locationHistoryRejected());
     });
-  }
-}
-
-export function receiptInventory(docId) {
-  return dispatch => {
-    var receipts = [];
-    dispatch(toggleReceiptVisible())
-    dispatch(receiptHistoryRequested());
-    return firebase.database().ref("previousReceipts").orderByChild("document").equalTo(parseInt(docId)).once('value', receiptSnap => {
-      receiptSnap.forEach(function(receiptSnap) {
-         firebase.database().ref("inventory").orderByChild("sku").equalTo(receiptSnap.val().sku).once('value', itemSnap => {
-          itemSnap.forEach(function(itemSnap) {
-            let lookup = {
-              key: receiptSnap.key,
-              sku: receiptSnap.val().sku,
-              quantityReceived: receiptSnap.val().quantity,
-              description: itemSnap.val().description,
-              currentLocation: itemSnap.val().location,
-              currentBackstock: itemSnap.val().backstock,
-              currentQuantity: itemSnap.val().stock
-            };
-            receipts.push(lookup);  
-          })
-        })   
-      });
-    })
-    .then(response => {
-          dispatch(receiptLookupFulfilled(receipts));  
-      })
-    .catch((error) => {
-      console.log(error);
-      dispatch(receiptHistoryRejected());
-    });
-  }
-}
-
-function receiptHistoryRequested() {
-  return {
-    type: RECEIPT_HISTORY_REQUESTED
-  };
-}
-
-function receiptHistoryRejected() {
-  return {
-    type: RECEIPT_HISTORY_REJECTED
-  }
-}
-
-function receiptLookupFulfilled(receipts) {
-  return {
-    type: RECEIPT_LOOKUP_FULFILLED,
-    payload: receipts
-  };
-}
-
-function toggleReceiptVisible() {
-  return {
-    type: RECEIPT_VISIBLE
   }
 }

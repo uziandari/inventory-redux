@@ -9,7 +9,7 @@ import '../styles/item.css';
 
 export default class ItemView extends Component {
   render() {
-    const { toggleLocations, toggleUpc, toggleReceipts, locationsVisible, parentsVisible, upcVisible, receiptVisible, locHistory, findReceipt, receipts, isVisible } = this.props;
+    const { toggleLocations, toggleUpc, toggleReceipts, locationsVisible, parentsVisible, upcVisible, receiptVisible, locHistory, findReceipt, receipts, receiptDocumentVisible, receiptHistory } = this.props;
     if (locHistory && (locationsVisible || parentsVisible)) {
       var historyNode = this.props.locHistory.map((history, index) => {
         return (
@@ -35,14 +35,13 @@ export default class ItemView extends Component {
         return (
           <tr key={index}>
             <td>{history.receiptDate}</td>
-            <td><button onClick={() => findReceipt(history.documentNumber)}>{history.documentNumber}</button></td>
+            <td><button onClick={() => toggleReceipts(history.documentNumber, "document")}>{history.documentNumber}</button></td>
             <td>{history.quantityReceived}</td>
             <td>{history.type}</td>
           </tr>
         );
       });
-    }
-  
+    } 
 
     if (!this.props.item) { 
       return (
@@ -85,7 +84,7 @@ export default class ItemView extends Component {
                     <button type="button" onClick={() => toggleUpc(this.props.item.sku)} className="btn btn-primary btn-sm">Past UPCs</button>
                     <button type="button" onClick={() => toggleLocations(this.props.item.sku, "sku")} className="btn btn-primary btn-sm">Past Locations</button>
                     { (this.props.item.parentSku) ? <button type="button" onClick={() => toggleLocations(this.props.item.parentSku, "parent_sku")} className="btn btn-primary btn-sm">Parent Locations</button> : null }  
-                    <button type="button" onClick={() => toggleReceipts(this.props.item.sku)} className="btn btn-primary btn-sm">Receipts</button>
+                    <button type="button" onClick={() => toggleReceipts(this.props.item.sku, "sku")} className="btn btn-primary btn-sm">Receipts</button>
                   </div>
                 </div>
               </div>
@@ -97,8 +96,7 @@ export default class ItemView extends Component {
                 {historyNode}
               </tbody>
             </table>
-            {console.log(receipts)}
-            {isVisible ? receipts.length > 0 ? <ReceiptList receiptId={receipts}/> : <h3>Loading</h3> : null}
+             {receiptHistory && receiptVisible && receiptHistory.length > 0 ? <ReceiptList receiptId={receiptHistory} /> : null }
           </div>
         </div>
       );

@@ -1,4 +1,4 @@
-import { ITEM_INVENTORY_FULFILLED, LOCATION_HISTORY_FULFILLED, PARENT_HISTORY_FULFILLED, PRODUCTCODE_HISTORY_FULFILLED, RECEIPT_HISTORY_FULFILLED } from '../actions';
+import { ITEM_INVENTORY_FULFILLED, LOCATION_HISTORY_FULFILLED, PARENT_HISTORY_FULFILLED, PRODUCTCODE_HISTORY_FULFILLED, RECEIPT_HISTORY_FULFILLED, RECEIPT_DOCUMENT_FULFILLED } from '../actions';
 
 const initialState = {
   data: [],
@@ -6,7 +6,8 @@ const initialState = {
   locationsVisible: false,
   parentsVisible: false,
   upcVisible: false,
-  receiptVisible: false
+  receiptVisible: false,
+  receiptDocumentVisible: false
 };
 
 export default function ItemInventory(state = initialState, action) {
@@ -19,7 +20,8 @@ export default function ItemInventory(state = initialState, action) {
         locationsVisible: false,
         parentsVisible: false,
         upcVisible: false,
-        receiptVisible: false
+        receiptVisible: false,
+        receiptDocumentVisible: false
       }
     case LOCATION_HISTORY_FULFILLED:
       return {
@@ -28,7 +30,8 @@ export default function ItemInventory(state = initialState, action) {
         locationsVisible: !state.locationsVisible,
         parentsVisible: false,
         upcVisible: false,
-        receiptVisible: false
+        receiptVisible: false,
+        receiptDocumentVisible: false
       }
     case PARENT_HISTORY_FULFILLED:
       return {
@@ -37,6 +40,7 @@ export default function ItemInventory(state = initialState, action) {
         locationsVisible: false,
         upcVisible: false,
         receiptVisible: false,
+        receiptDocumentVisible: false,
         parentsVisible: !state.parentsVisible
       }
     case PRODUCTCODE_HISTORY_FULFILLED:
@@ -46,16 +50,28 @@ export default function ItemInventory(state = initialState, action) {
         upcVisible: !state.upcVisible,
         locationsVisible: false,
         receiptVisible: false,
+        receiptDocumentVisible: false,  
         parentsVisible: false
       }
     case RECEIPT_HISTORY_FULFILLED:
       return {
         ...state,
+        receiptVisible: !state.receiptVisible,
         locationHistory: action.payload,
         upcVisible: false,
         locationsVisible: false,
         parentsVisible: false,
-        receiptVisible: !state.receiptVisible
+        receiptDocumentVisible: false
+      }
+    case RECEIPT_DOCUMENT_FULFILLED:
+      return {
+        ...state,
+        receiptHistory: action.payload,
+        upcVisible: false,
+        locationsVisible: false,
+        parentsVisible: false,
+        receiptVisible: true,
+        receiptDocumentVisible: state.receiptVisible
       }
     default:
       return state;
