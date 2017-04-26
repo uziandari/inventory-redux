@@ -15,7 +15,7 @@ const ReceiptList = (receiptId) => {
     ); 
   });
   return (
-    <table>
+    <table className="table table-striped table-condensed">
       <thead>
         <tr>
           <th>SKU</th>

@@ -71,7 +71,7 @@ export default function ItemInventory(state = initialState, action) {
         locationsVisible: false,
         parentsVisible: false,
         receiptVisible: true,
-        receiptDocumentVisible: state.receiptVisible
+        receiptDocumentVisible: !state.receiptDocumentVisible
       }
     default:
       return state;

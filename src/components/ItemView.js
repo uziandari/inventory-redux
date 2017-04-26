@@ -96,7 +96,7 @@ export default class ItemView extends Component {
                 {historyNode}
               </tbody>
             </table>
-             {receiptHistory && receiptVisible && receiptHistory.length > 0 ? <ReceiptList receiptId={receiptHistory} /> : null }
+             {receiptHistory && receiptDocumentVisible && receiptHistory.length > 0 ? <ReceiptList receiptId={receiptHistory} /> : null }
           </div>
         </div>
       );

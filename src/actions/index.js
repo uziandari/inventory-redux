@@ -640,7 +640,6 @@ export function findReceiptHistory(id, searchField) {
       var historyArr = [];
       if (searchField === "sku") {
         snap.forEach(function(snap) {
-          console.log(snap.val())
           let receiptTime = moment(snap.val().changeDate).format('MM-DD-YYYY')
           let history = {
             key: snap.key,
