@@ -1,4 +1,6 @@
-import { ITEM_INVENTORY_FULFILLED, LOCATION_HISTORY_FULFILLED, PARENT_HISTORY_FULFILLED, PRODUCTCODE_HISTORY_FULFILLED, RECEIPT_HISTORY_FULFILLED, RECEIPT_DOCUMENT_FULFILLED } from '../actions';
+import { ITEM_INVENTORY_FULFILLED, LOCATION_HISTORY_FULFILLED, PARENT_HISTORY_FULFILLED, 
+        PRODUCTCODE_HISTORY_FULFILLED, RECEIPT_HISTORY_FULFILLED, 
+        RECEIPT_DOCUMENT_FULFILLED, RECEIPT_DOCUMENT_VISIBLE, RECEIPT_DOCUMENT_TOGGLE } from '../actions';
 
 const initialState = {
   data: [],
@@ -7,7 +9,8 @@ const initialState = {
   parentsVisible: false,
   upcVisible: false,
   receiptVisible: false,
-  receiptDocumentVisible: false
+  receiptDocumentVisible: false,
+  receiptNum: 1
 };
 
 export default function ItemInventory(state = initialState, action) {
@@ -71,7 +74,26 @@ export default function ItemInventory(state = initialState, action) {
         locationsVisible: false,
         parentsVisible: false,
         receiptVisible: true,
+      }
+    case RECEIPT_DOCUMENT_VISIBLE:
+      return {
+        ...state,
+        upcVisible: false,
+        locationsVisible: false,
+        parentsVisible: false,
+        receiptVisible: true,
         receiptDocumentVisible: !state.receiptDocumentVisible
+      }
+    case RECEIPT_DOCUMENT_TOGGLE:
+    console.log(action.payload)
+      return {
+        ...state,
+        upcVisible: false,
+        locationsVisible: false,
+        parentsVisible: false,
+        receiptVisible: true,
+        receiptDocumentVisible: true,
+        receiptNum: action.payload
       }
     default:
       return state;

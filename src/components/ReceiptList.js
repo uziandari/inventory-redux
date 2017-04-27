@@ -10,7 +10,7 @@ const ReceiptList = (receiptId) => {
         <td>{item.quantityReceived}</td>
         <td>{item.currentLocation}</td>
         <td>{item.currentBackstock}</td>
-        <td>{item.currentQuantity}</td>
+        <td>{item.currentStock}</td>
       </tr>
     ); 
   });

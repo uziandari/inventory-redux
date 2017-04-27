@@ -21,8 +21,9 @@ class ItemDetail extends Component {
     this.props.actions.findUpcHistory(sku);
   }
 
-  toggleReceiptView(sku, searchField) {
-    this.props.actions.findReceiptHistory(sku, searchField);
+  toggleReceiptView(sku, searchField, receiptNum) {
+    console.log(receiptNum)
+    this.props.actions.findReceiptHistory(sku, searchField, receiptNum);
   }
 
   render() {
@@ -31,7 +32,7 @@ class ItemDetail extends Component {
         <div className="go-back">
           <Link to='/inventory' className="detail-link second after">Go Back</Link>
         </div>
-        <ItemView item={this.props.inventory} locHistory={this.props.locHistory} receiptHistory={this.props.receiptHistory} 
+        <ItemView item={this.props.inventory} locHistory={this.props.locHistory} receiptHistory={this.props.receiptHistory} receiptNum={this.props.receiptNum}
                   toggleLocations={this.toggleLocationsView.bind(this)} 
                   toggleUpc={this.toggleUpcView.bind(this)}
                   toggleReceipts={this.toggleReceiptView.bind(this)} 
@@ -40,7 +41,8 @@ class ItemDetail extends Component {
                   parentsVisible={this.props.parentsVisible} 
                   receiptVisible={this.props.receiptVisible}
                   receipts ={this.props.receipts}
-                  receiptDocumentVisible ={this.props.receiptDocumentVisible} />
+                  receiptDocumentVisible ={this.props.receiptDocumentVisible}
+                  />
       </div>
     );
   }
@@ -59,7 +61,8 @@ function mapStateToProps(state) {
       receiptVisible: state.item.receiptVisible,
       receipts: state.receipt.receipts,
       receiptDocumentVisible: state.item.receiptDocumentVisible,
-      receiptHistory: state.item.receiptHistory
+      receiptHistory: state.item.receiptHistory,
+      receiptNum: state.item.receiptNum
     };
   }
 }

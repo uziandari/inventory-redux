@@ -59,6 +59,8 @@ export const RECEIPT_HISTORY_REQUESTED = 'RECEIPT_HISTORY_REQUESTED';
 export const RECEIPT_LOOKUP_FULFILLED = 'RECEIPT_LOOKUP_FULFILLED';
 export const RECEIPT_HISTORY_REJECTED = 'RECEIPT_HISTORY_REJECTED';
 export const RECEIPT_DOCUMENT_FULFILLED = 'RECEIPT_DOCUMENT_FULFILLED';
+export const RECEIPT_DOCUMENT_VISIBLE = 'RECEIPT_DOCUMENT_VISIBLE';
+export const RECEIPT_DOCUMENT_TOGGLE = 'RECEIPT_DOCUMENT_TOGGLE';
 
 
 const firebaseConfig = {
@@ -163,6 +165,7 @@ export function searchInventory(term, searchField) {
           console.log(inventory);
           firebase.database().ref("searchLog").push({
             user: firebase.auth().currentUser.email,
+            searchTime: firebase.database.ServerValue.TIMESTAMP,
             searchTerm: term,
             returnData: inventory
           })
@@ -607,6 +610,20 @@ function receiptDocumentFulfilled(historyArr) {
   }
 }
 
+function receiptDocumentVisible(id, receiptNum) {
+  if (id === receiptNum) {
+    return {
+      type: RECEIPT_DOCUMENT_VISIBLE
+    }
+  } else {
+    return {
+      type: RECEIPT_DOCUMENT_TOGGLE,
+      payload: id
+    }
+  }
+  
+}
+
 //find previous upcs
 export function findUpcHistory(skuId) {
   return dispatch => {
@@ -633,7 +650,7 @@ export function findUpcHistory(skuId) {
 }
 
 //find receipts
-export function findReceiptHistory(id, searchField) {
+export function findReceiptHistory(id, searchField, receiptNum) {
   return dispatch => {
     dispatch(locationHistoryRequested());
      return firebase.database().ref("previousReceipts").orderByChild(searchField).equalTo(id).once('value', snap => {
@@ -669,6 +686,7 @@ export function findReceiptHistory(id, searchField) {
        });
        const history = historyArr;
        dispatch(receiptDocumentFulfilled(history))
+       dispatch(receiptDocumentVisible(id, receiptNum))
       }
       
     })

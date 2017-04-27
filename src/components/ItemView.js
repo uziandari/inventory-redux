@@ -9,7 +9,7 @@ import '../styles/item.css';
 
 export default class ItemView extends Component {
   render() {
-    const { toggleLocations, toggleUpc, toggleReceipts, locationsVisible, parentsVisible, upcVisible, receiptVisible, locHistory, findReceipt, receipts, receiptDocumentVisible, receiptHistory } = this.props;
+    const { toggleLocations, toggleUpc, toggleReceipts, locationsVisible, parentsVisible, upcVisible, receiptVisible, locHistory, findReceipt, receipts, receiptDocumentVisible, receiptHistory, receiptNum } = this.props;
     if (locHistory && (locationsVisible || parentsVisible)) {
       var historyNode = this.props.locHistory.map((history, index) => {
         return (
@@ -35,7 +35,7 @@ export default class ItemView extends Component {
         return (
           <tr key={index}>
             <td>{history.receiptDate}</td>
-            <td><button onClick={() => toggleReceipts(history.documentNumber, "document")}>{history.documentNumber}</button></td>
+            <td><button onClick={() => toggleReceipts(history.documentNumber, "document", receiptNum)}>{history.documentNumber}</button></td>
             <td>{history.quantityReceived}</td>
             <td>{history.type}</td>
           </tr>
