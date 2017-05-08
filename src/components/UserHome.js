@@ -9,6 +9,11 @@ export default class UserHome extends Component {
       <div id="user-home">
         <h1>What's New</h1>
         <div className="update-list">
+          <h3>-5/5/2017-</h3>
+          <ul>
+            <li>Fixed issue with receipt date not properly displaying.</li>
+            <li>Fixed issue with leading zeroes on inventory search.</li>
+          </ul>
           <h3>-4/27/2017-</h3>
           <ul>
             <li>Users can now view receipts from the item detail page.</li>

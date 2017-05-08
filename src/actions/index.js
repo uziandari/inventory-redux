@@ -140,6 +140,7 @@ export function searchInventory(term, searchField) {
 
   return dispatch => {
     if (term !== '') {
+      term = term.replace(/^0+/, '');
       dispatch(searchInventoryRequested());
       return firebase.database().ref("inventory").orderByChild(searchField).equalTo(term.toUpperCase().trim()).limitToFirst(40).once('value', snap => {
         var itemsArr = [];
@@ -657,7 +658,7 @@ export function findReceiptHistory(id, searchField, receiptNum) {
       var historyArr = [];
       if (searchField === "sku") {
         snap.forEach(function(snap) {
-          let receiptTime = moment(snap.val().changeDate).format('MM-DD-YYYY')
+          let receiptTime = moment(snap.val().receiptDate).format('MM-DD-YYYY')
           let history = {
             key: snap.key,
             receiptDate: receiptTime,
