@@ -139,7 +139,7 @@ export function changeLocationField(searchField) {
 export function searchInventory(term, searchField) {
 
   return dispatch => {
-    if (term !== '') {
+    if (term !== '' && searchField !== 'sku' && searchField !== 'parent_sku') {
       term = term.replace(/^0+/, '');
       dispatch(searchInventoryRequested());
       return firebase.database().ref("inventory").orderByChild(searchField).equalTo(term.toUpperCase().trim()).limitToFirst(40).once('value', snap => {
